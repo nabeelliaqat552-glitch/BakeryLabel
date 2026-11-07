@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- label outline -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2.5"
+        android:fillColor="#00000000"
+        android:pathData="M34,40h40a5,5 0 0 1 5,5v18a5,5 0 0 1 -5,5h-40a5,5 0 0 1 -5,-5v-18a5,5 0 0 1 5,-5z" />
+    <!-- title line -->
+    <path android:fillColor="#FFFFFF" android:pathData="M42,46h24v3h-24z" />
+    <!-- product line -->
+    <path android:fillColor="#FFFFFF" android:pathData="M38,53h32v4h-32z" />
+    <!-- date lines -->
+    <path android:fillColor="#FFFFFF" android:pathData="M36,61h12v2h-12z" />
+    <path android:fillColor="#FF3B30" android:pathData="M60,61h12v2h-12z" />
+</vector>
