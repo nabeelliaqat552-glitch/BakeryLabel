@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ivory">#FBF7EF</color>
+    <color name="chocolate">#3A2315</color>
+    <color name="gold">#D9B665</color>
+    <style name="Theme.FoodLabelStudio" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/ivory</item>
+        <item name="android:statusBarColor">@color/ivory</item>
+        <item name="android:navigationBarColor">@color/ivory</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+</resources>
