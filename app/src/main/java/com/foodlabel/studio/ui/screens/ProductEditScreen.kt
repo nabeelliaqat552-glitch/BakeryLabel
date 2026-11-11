@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ContentCopy
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Print
+import androidx.compose.material.icons.outlined.QrCodeScanner
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -58,6 +59,7 @@ import com.foodlabel.studio.label.LabelElement
 import com.foodlabel.studio.ui.LocalBusiness
 import com.foodlabel.studio.ui.LocalContainer
 import com.foodlabel.studio.ui.Routes
+import com.foodlabel.studio.ui.components.BarcodeScannerDialog
 import com.foodlabel.studio.ui.components.CardBlock
 import com.foodlabel.studio.ui.components.Chip
 import com.foodlabel.studio.ui.components.ConfirmDialog
@@ -115,6 +117,8 @@ fun ProductEditScreen(productId: Long, onBack: () -> Unit, onNavigate: (String) 
     val custom = remember { mutableStateListOf<Pair<String, String>>() }
     var confirmDelete by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
+    var scanning by remember { mutableStateOf(false) }
+    var scanNote by remember { mutableStateOf<Pair<String, NoticeKind>?>(null) }
 
     LaunchedEffect(productId, business.id) {
         if (productId == 0L) return@LaunchedEffect
@@ -224,13 +228,16 @@ fun ProductEditScreen(productId: Long, onBack: () -> Unit, onNavigate: (String) 
                 Row(Modifier.horizontalScroll(rememberScrollState()), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     BarcodeType.entries.forEach { t -> Chip(t.label, t == barcodeType, { barcodeType = t; barcodeInternal = false }) }
                 }
-                Field(barcode, { barcode = it; barcodeInternal = false }, "Barcode number", keyboard = if (barcodeType in setOf(BarcodeType.CODE_128, BarcodeType.CODE_39, BarcodeType.QR_CODE)) KeyboardType.Text else KeyboardType.Number,
+                Field(barcode, { barcode = it; barcodeInternal = false; scanNote = null }, "Barcode number", keyboard = if (barcodeType in setOf(BarcodeType.CODE_128, BarcodeType.CODE_39, BarcodeType.QR_CODE)) KeyboardType.Text else KeyboardType.Number,
                     isError = check is BarcodeCheck.Invalid,
                     supporting = when (check) {
                         is BarcodeCheck.Invalid -> check.reason
                         is BarcodeCheck.Valid -> check.note ?: "Valid ${barcodeType.label}."
                         null -> "Leave empty for no barcode."
                     })
+                PrimaryButton("Scan barcode with camera", { scanNote = null; scanning = true }, Modifier.fillMaxWidth(),
+                    icon = Icons.Outlined.QrCodeScanner, height = 52.dp)
+                scanNote?.let { Notice(it.first, it.second) }
                 SecondaryButton("Generate an internal code", {
                     scope.launch {
                         val v = c.repo.nextInternalBarcode(business.id)
@@ -285,6 +292,18 @@ fun ProductEditScreen(productId: Long, onBack: () -> Unit, onNavigate: (String) 
             PrimaryButton("Save product", { save { onBack() } }, modifier = Modifier.weight(1f))
         }
     }
+    if (scanning) BarcodeScannerDialog(
+        onResult = { code ->
+            scanning = false
+            barcodeType = code.type; barcode = code.value; barcodeInternal = false
+            scope.launch {
+                scanNote = if (c.repo.isBarcodeUsedElsewhere(business.id, code.value, original?.id ?: -1))
+                    "Scanned ${code.type.label} ${code.value}, but another product in ${business.name} already uses this barcode." to NoticeKind.Warning
+                else "Scanned ${code.type.label}: ${code.value}" to NoticeKind.Success
+            }
+        },
+        onDismiss = { scanning = false },
+    )
     if (confirmDelete) ConfirmDialog(
         "Delete ${original?.nameEn}?", "The product and its barcode are removed from ${business.name}. Print history is kept.",
         "Delete", { confirmDelete = false; scope.launch { original?.let { c.repo.deleteProduct(it) }; onBack() } }, { confirmDelete = false }, danger = true,

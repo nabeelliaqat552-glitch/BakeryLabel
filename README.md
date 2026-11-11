@@ -53,3 +53,4 @@ Dependency injection is a small hand-written container (`AppContainer`) instead 
 - Printing runs in the app process, not a WorkManager job. Keep the app open until a job finishes.
 - "Automatic protocol detection" is not offered: thermal printers do not reliably report their language. The user picks it and confirms with a test label.
 - Product photos are stored but not placed on labels (the logo is).
+- The barcode scanner reads EAN-13, EAN-8, UPC-A, UPC-E, Code 128, Code 39 and QR. It has been compiled but not yet tried on a phone.
