@@ -370,10 +370,40 @@ const SIZES = ['38x25','40x30','50x25','50x30','58x40','60x40','75x50','100x50']
 const TPLS = [{id:'classic',n:'Classic',u:'کلاسک'},{id:'modern',n:'Modern',u:'ماڈرن'},{id:'minimal',n:'Minimal',u:'سادہ'},{id:'bold',n:'Bold',u:'بولڈ'}];
 const ACCENTS = ['#4f8a1f','#2e7d32','#c0392b','#d35400','#8e44ad','#1f6fb2','#6d4c41','#111111'];
 const FIELDS = [['shop','Shop name','دکان کا نام'],['name','Item name','انگریزی نام'],['urdu','Urdu name','اردو نام'],['price','Price','قیمت'],['barcode','Barcode','بارکوڈ'],['weight','Weight','وزن'],['mfg','MFG date','تیاری کی تاریخ'],['exp','EXP date','میعاد کی تاریخ'],['cat','Category','کیٹیگری'],['ingr','Ingredients','اجزاء'],['phone','Phone no.','فون نمبر'],['batch','Batch no.','بیچ نمبر'],['halal','Halal mark','حلال نشان'],['veg','Veg / Non-veg mark','ویج / نان ویج نشان']];
-const EMOJIS = ['🥛','🧀','🧈','🍶','🥣','🍦','🥚','🍪','🥠','🥥','🍫','🎂','🍰','🧁','🥧','🍮','🍩','🥐','🥖','🍞','🥯','🥨','🥪','🍔','🍕','🌯','🌭','🍟','🍗','🥟','🥤','☕','🧃','🍬','🍯','🥜'];
+const EMOJIS = ['🥛','🧀','🧈','🍶','🥣','🍦','🥚','🍪','🥠','🥥','🍫','🎂','🍰','🧁','🥧','🍮','🍩','🥐','🥖','🍞','🥯','🥨','🥪','🍔','🍕','🌯','🌭','🍟','🍗','🥟','🥤','☕','🧃','🍬','🍯','🥜','🍡','🥮','🟠','🔶','⚪','🍥'];
 const DEF_LABEL = () => ({tpl:'classic', size:'50x30', accent:'#4f8a1f', fields:{shop:true,name:true,urdu:true,price:true,barcode:true,weight:true,mfg:true,exp:true,cat:false,ingr:false}});
 const UR_NAMES = {'Fresh Milk':'تازہ دودھ','Plain Yogurt (Dahi)':'دہی','Salted Butter':'مکھن','Cheddar Cheese':'چیڈر پنیر','Fresh Cream':'تازہ کریم','Nan Khatai':'نان خطائی','Zeera Biscuits':'زیرہ بسکٹ','Coconut Cookies':'ناریل کوکیز','Choco Chip Cookies':'چاکلیٹ چپ کوکیز','Chocolate Fudge Cake':'چاکلیٹ فج کیک','Pineapple Cake':'پائن ایپل کیک','Black Forest Cake':'بلیک فارسٹ کیک','Red Velvet Cupcake':'ریڈ ویلویٹ کپ کیک','Chicken Patty':'چکن پیٹیز','Club Sandwich':'کلب سینڈوچ','Chicken Burger':'چکن برگر','Pizza Slice':'پیزا سلائس','Chicken Shawarma':'چکن شوارما','Sandwich Bread':'سینڈوچ بریڈ','Cake Rusk':'کیک رس','Milky Bun':'ملکی بن','Butter Croissant':'بٹر کروسان','Glazed Donut':'ڈونٹ','Apple Pie':'ایپل پائی'};
 const CAT_UR = {dairy:'ڈیری',biscuits:'بسکٹ',cakes:'کیک',fastfood:'فاسٹ فوڈ',bread:'ڈبل روٹی اور رس',sweets:'پیسٹری'};
+const MITHAI_CAT = {id:'mithai', name:'Sweets (Mithai)', nameUr:'مٹھائی', emoji:'🍡'};
+const MITHAI = [
+  ['Gulab Jamun','گلاب جامن',1400,'1 kg',5,'🍡','Khoya, flour, sugar syrup, cardamom'],
+  ['Plain Barfi','سادہ برفی',1600,'1 kg',7,'🍬','Khoya, sugar, milk'],
+  ['Pista Barfi','پستہ برفی',2000,'1 kg',7,'🥜','Khoya, pistachio, sugar'],
+  ['Chocolate Barfi','چاکلیٹ برفی',1800,'1 kg',7,'🍫','Khoya, cocoa, sugar'],
+  ['Coconut Barfi','ناریل برفی',1500,'1 kg',7,'🥥','Coconut, milk, sugar'],
+  ['Milk Cake (Kalakand)','ملک کیک',1700,'1 kg',5,'🥮','Milk, sugar, ghee'],
+  ['Rasgulla','رس گلہ',1300,'1 kg',4,'⚪','Chhena, sugar syrup'],
+  ['Ras Malai','رس ملائی',1500,'1 kg',2,'🥣','Chhena, milk, sugar, pistachio'],
+  ['Cham Cham','چم چم',1400,'1 kg',4,'🍥','Chhena, sugar, coconut'],
+  ['Jalebi','جلیبی',900,'1 kg',2,'🥨','Flour, sugar syrup, ghee'],
+  ['Imarti','امرتی',1000,'1 kg',2,'🥨','Urad dal, sugar syrup'],
+  ['Motichoor Ladoo','موتی چور لڈو',1200,'1 kg',7,'🟠','Gram flour, sugar, ghee'],
+  ['Besan Ladoo','بیسن لڈو',1300,'1 kg',10,'🟠','Gram flour, ghee, sugar'],
+  ['Balushahi','بالو شاہی',1100,'1 kg',7,'🍩','Flour, ghee, sugar syrup'],
+  ['Peda','پیڑا',1600,'1 kg',7,'🍬','Khoya, sugar, cardamom'],
+  ['Kaju Katli','کاجو کتلی',3500,'1 kg',10,'🔶','Cashew, sugar, silver leaf'],
+  ['Patisa','پتیسہ',1100,'1 kg',15,'🍬','Gram flour, ghee, sugar'],
+  ['Sohan Halwa','سوہن حلوہ',2200,'1 kg',30,'🍯','Wheat, ghee, sugar, nuts'],
+  ['Habshi Halwa','حبشی حلوہ',2000,'1 kg',15,'🍯','Milk, wheat, sugar, ghee'],
+  ['Gajar Halwa','گاجر کا حلوہ',1500,'1 kg',3,'🥕','Carrot, milk, sugar, ghee'],
+  ['Kheer (Cup)','کھیر',250,'1 cup',2,'🍮','Rice, milk, sugar'],
+  ['Mix Mithai','مکس مٹھائی',1500,'1 kg',5,'🍡','Assorted sweets']];
+function mithaiItems(){
+  return MITHAI.map((r, k) => {
+    const d = '2026' + String(10000000 + (100 + k) * 7919).slice(-8);
+    return {id:uid(), name:r[0], nameUr:r[1], photo:'', veg:'veg', batch:'', cat:'mithai', price:r[2], weight:r[3], shelf:r[4], emoji:r[5], ingr:r[6], barcode: d + eanCheck(d), stock: 20, label:null, created: Date.now() - (100 + k) * 1000};
+  });
+}
 function seed(){
   const cats = [
     {id:'dairy',name:'Dairy',nameUr:'ڈیری',emoji:'🥛'},{id:'biscuits',name:'Biscuits',nameUr:'بسکٹ',emoji:'🍪'},{id:'cakes',name:'Cakes',nameUr:'کیک',emoji:'🎂'},
@@ -393,7 +423,8 @@ function seed(){
     const d = '2026' + String(10000000 + i * 7919).slice(-8); // 12 digits
     return {id:uid(), name:r[0], nameUr:UR_NAMES[r[0]]||'', photo:'', veg: r[1] === 'fastfood' ? 'nonveg' : 'veg', batch:'', cat:r[1], price:r[2], weight:r[3], shelf:r[4], emoji:r[5], ingr:r[6], barcode: d + eanCheck(d), stock: 20, label:null, created: Date.now() - i*1000};
   });
-  return {v:1, savedAt:0, settings:{lang:'ur', shop:'Shahi Bakers', shopUr:'شاہی بیکرز', tagline:'Fresh every morning', taglineUr:'روزانہ تازہ', phone:'0300-1234567', currency:'Rs', label:DEF_LABEL()},
+  cats.push(MITHAI_CAT); items.push(...mithaiItems());
+  return {v:1, savedAt:0, seeds:{mithai:1}, settings:{lang:'ur', shop:'Shahi Bakers', shopUr:'شاہی بیکرز', tagline:'Fresh every morning', taglineUr:'روزانہ تازہ', phone:'0300-1234567', currency:'Rs', label:DEF_LABEL()},
     categories:cats, items, queue:[], print:{mode:'a4', gap:2, printer:'p1'}, printers:seedPrinters(), recent:[]};
 }
 
@@ -412,7 +443,12 @@ let S = null, ART = null, DL = null, pubTimer = null, dirty = false, syncState =
   const fixL = L => { if (L && L.fields && L.fields.urdu === undefined) L.fields.urdu = true; };
   fixL(st.label);
   S.categories.forEach(c => { if (c.nameUr === undefined) c.nameUr = CAT_UR[c.id] || ''; });
-  S.items.forEach(i => { if (i.nameUr === undefined) i.nameUr = UR_NAMES[i.name] || ''; if (i.photo === undefined) i.photo = ''; if (i.veg === undefined) i.veg = i.cat === 'fastfood' ? 'nonveg' : (['dairy','biscuits','bread','cakes','sweets'].includes(i.cat) ? 'veg' : ''); fixL(i.label); });
+  if (!S.seeds || !S.seeds.mithai) {
+    S.seeds = Object.assign({}, S.seeds, {mithai:1});
+    if (!S.categories.some(c => c.id === 'mithai')) S.categories.push(Object.assign({}, MITHAI_CAT));
+    mithaiItems().forEach(it => { if (S.items.some(x => x.name === it.name)) return; if (S.items.some(x => x.barcode === it.barcode)) it.barcode = newBarcode(); S.items.push(it); });
+  }
+  S.items.forEach(i => { if (i.nameUr === undefined) i.nameUr = UR_NAMES[i.name] || ''; if (i.photo === undefined) i.photo = ''; if (i.veg === undefined) i.veg = i.cat === 'fastfood' ? 'nonveg' : (['dairy','biscuits','bread','cakes','sweets','mithai'].includes(i.cat) ? 'veg' : ''); fixL(i.label); });
 })();
 function save(){
   S.savedAt = Date.now();
