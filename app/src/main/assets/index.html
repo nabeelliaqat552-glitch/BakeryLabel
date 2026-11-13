@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!--H0-->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bakery Label Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--g:#5a9a22;--gd:#356812;--gl:#8cc63e;--gp:#eef5e3;--bg:#f4f6f0;--ink:#1c2614;--mut:#7d8775;--card:#fff;--line:#e5eadd;--red:#e0483e;--sh:0 6px 22px rgba(40,70,10,.08)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#e6ebdf;color:var(--ink);font-family:Poppins,system-ui,-apple-system,Segoe UI,sans-serif}
+button,input,select,textarea{font-family:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+.app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative;padding-bottom:110px;overflow-x:hidden}
+svg.i{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;flex:none}
+/* splash */
+#splash{position:fixed;inset:0;z-index:99;background:#f3f6ee;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s}
+#splash.hide{opacity:0;pointer-events:none}
+#splash h1{font-size:46px;font-weight:800;margin:10px 0 0;letter-spacing:-1px}
+#splash h1 span{color:var(--gl)}
+#splash p{color:var(--mut);margin:4px 0 0;font-size:14px}
+#splash .skip{position:absolute;top:calc(18px + env(safe-area-inset-top));inset-inline-end:22px;color:var(--g);font-weight:600;font-size:14px}
+.bob{animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px)}}
+/* hero */
+.hero{background:linear-gradient(165deg,#6eae2e 0%,#4c8a1c 55%,#356812 100%);color:#fff;padding:calc(16px + env(safe-area-inset-top)) 18px 22px;border-radius:0 0 30px 30px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.07)}
+.hrow{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
+.logo{width:46px;height:46px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:24px;box-shadow:0 3px 10px rgba(0,0,0,.15)}
+.hrow small{display:block;font-size:11px;opacity:.85}
+.hrow b{font-size:17px;font-weight:700}
+.hrow .sp{flex:1;min-width:0}
+.icb{width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.18);display:grid;place-items:center;color:#fff;position:relative}
+.sync{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;background:rgba(255,255,255,.16);padding:3px 9px;border-radius:20px;margin-top:3px}
+.sync i{width:6px;height:6px;border-radius:50%;background:#c8f08f;display:inline-block}
+.sync.busy i{background:#ffd56b;animation:pulse 1s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.promo{margin-top:18px;background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.18);border-radius:22px;padding:16px;display:flex;gap:10px;align-items:center;position:relative;z-index:1}
+.promo .pill{display:inline-block;background:#2b5410;color:#d6f3a8;font-size:9.5px;font-weight:700;letter-spacing:1.2px;padding:4px 10px;border-radius:20px}
+.promo h2{margin:8px 0 2px;font-size:21px;line-height:1.15;font-weight:800}
+.promo h2 span{color:#d8f5a2}
+.promo p{margin:0;font-size:11.5px;opacity:.85}
+.promo .btns{display:flex;gap:6px;margin-top:10px}
+.chipw{background:#fff;color:var(--gd);font-weight:600;font-size:11.5px;padding:7px 12px;border-radius:20px;display:inline-flex;align-items:center;gap:4px}
+.chipg{background:rgba(255,255,255,.2);color:#fff;font-weight:600;font-size:11.5px;padding:7px 12px;border-radius:20px}
+.search{margin:16px 0 0;background:#fff;border-radius:18px;display:flex;align-items:center;gap:10px;padding:0 14px;color:var(--g);box-shadow:var(--sh);position:relative;z-index:1}
+.search input{flex:1;border:0;outline:0;padding:15px 0;font-size:14px;background:none;color:var(--ink)}
+.search input::placeholder{color:#a5ad9c}
+/* sections */
+.sec{padding:0 18px}
+.sh{display:flex;align-items:center;justify-content:space-between;margin:22px 0 12px}
+.sh h3{margin:0;font-size:17px;font-weight:700;border-inline-start:4px solid var(--g);padding-inline-start:9px;line-height:1.1}
+.sh a,.sh button{color:var(--g);font-weight:600;font-size:13px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.stat{background:#fff;border-radius:18px;padding:12px;box-shadow:var(--sh)}
+.stat b{display:block;font-size:20px;font-weight:800;color:var(--gd)}
+.stat span{font-size:11px;color:var(--mut)}
+.cats{display:flex;gap:14px;overflow-x:auto;padding:4px 18px 6px;margin:0 -18px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{display:flex;flex-direction:column;align-items:center;gap:6px;flex:none;width:68px}
+.cat .c{width:64px;height:64px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:28px;box-shadow:var(--sh);border:2.5px solid transparent;transition:.2s}
+.cat.on .c{border-color:var(--g);background:var(--gp)}
+.cat span{font-size:11.5px;font-weight:500;text-align:center;line-height:1.2}
+.cat.on span{color:var(--g);font-weight:700}
+.cat .n{font-size:10px;color:var(--mut);margin-top:-5px}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.qk{background:#fff;border-radius:18px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;font-weight:600;box-shadow:var(--sh)}
+.qk .qi{width:40px;height:40px;border-radius:14px;background:var(--gp);color:var(--g);display:grid;place-items:center}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card{background:#fff;border-radius:22px;padding:13px 13px 12px;box-shadow:var(--sh);position:relative;cursor:pointer;transition:transform .15s}
+.card:active{transform:scale(.98)}
+.card .t{font-size:13.5px;font-weight:700;line-height:1.25;padding-inline-end:22px;min-height:34px}
+.card .pr{font-size:12px;color:var(--mut);font-weight:500;margin-top:1px}
+.card .em{width:96px;height:96px;margin:8px auto 6px;border-radius:50%;background:radial-gradient(circle at 50% 45%,#f2f7ea 0,#e8f0dc 70%);display:grid;place-items:center;font-size:50px}
+.card .mt{font-size:10.5px;color:var(--mut);line-height:1.6}
+.card .mt b{color:#e0702b;font-weight:600}
+.card .plus{position:absolute;inset-inline-end:12px;bottom:12px;width:30px;height:30px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;box-shadow:0 4px 10px rgba(90,154,34,.35)}
+.card .plus svg{width:18px;height:18px;stroke-width:2.6}
+.card .qb{position:absolute;inset-inline-end:12px;bottom:46px;background:#e0702b;color:#fff;font-size:10px;font-weight:700;border-radius:10px;padding:1px 7px}
+.card .bc{font-size:9.5px;color:#a2aa98;letter-spacing:.6px;font-family:ui-monospace,Menlo,monospace}
+.card .tagc{position:absolute;inset-inline-end:11px;top:12px;font-size:16px}
+.empty{text-align:center;padding:40px 20px;color:var(--mut)}
+.empty .e{font-size:54px}
+/* bottom nav */
+nav.bn{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#fff;display:flex;justify-content:space-around;align-items:flex-end;padding:8px 6px calc(10px + env(safe-area-inset-bottom));border-radius:24px 24px 0 0;box-shadow:0 -6px 24px rgba(30,50,10,.08);z-index:20}
+nav.bn button{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10.5px;color:#a7ae9f;font-weight:500;width:64px;position:relative}
+nav.bn button.on{color:var(--g);font-weight:700}
+nav.bn button.on:before{content:"";position:absolute;top:-8px;width:22px;height:3px;border-radius:3px;background:var(--g)}
+nav.bn .scan{width:62px;height:62px;border-radius:50%;background:linear-gradient(150deg,#7cbc35,#3d7416);color:#fff;display:grid;place-items:center;margin-top:-34px;box-shadow:0 8px 20px rgba(70,130,20,.45);border:5px solid var(--bg)}
+nav.bn .scan svg{width:26px;height:26px}
+nav.bn .bdg{position:absolute;top:-4px;inset-inline-end:12px;background:#e0702b;color:#fff;font-size:9.5px;font-weight:700;border-radius:10px;padding:0 6px;line-height:16px}
+/* top bars for inner views */
+.top{padding:calc(16px + env(safe-area-inset-top)) 18px 6px;display:flex;align-items:center;gap:12px}
+.top h2{margin:0;font-size:22px;font-weight:800;flex:1}
+.top .sub{font-size:12px;color:var(--mut);font-weight:500}
+.panel{background:#fff;border-radius:22px;padding:16px;box-shadow:var(--sh);margin-bottom:14px}
+.panel h4{margin:0 0 10px;font-size:14px;font-weight:700}
+/* forms */
+.f{display:block;margin-bottom:12px}
+.f>span{display:block;font-size:12px;font-weight:600;color:#56604d;margin:0 0 5px 2px}
+.in{width:100%;background:#f3f6ee;border:1.5px solid transparent;border-radius:14px;padding:12px 14px;font-size:14px;outline:0;transition:.15s}
+.in:focus{border-color:var(--gl);background:#fff}
+textarea.in{resize:vertical;min-height:62px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.inbtn{display:flex;gap:8px}
+.inbtn .in{flex:1}
+.mini{background:var(--gp);color:var(--gd);border-radius:12px;padding:0 12px;font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:15px;border-radius:18px;font-weight:700;font-size:15px;background:linear-gradient(90deg,#4f8a1f,#86c23b);color:#fff;box-shadow:0 8px 18px rgba(90,154,34,.3)}
+.btn.sec2{background:#fff;color:var(--gd);border:1.5px solid var(--line);box-shadow:none}
+.btn.danger{background:#fff;color:var(--red);border:1.5px solid #f5d3cf;box-shadow:none}
+.btn:disabled{opacity:.5}
+.btns2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.seg{display:flex;background:#f0f3ea;border-radius:14px;padding:4px;gap:4px}
+.seg button{flex:1;padding:9px 6px;border-radius:11px;font-size:12.5px;font-weight:600;color:var(--mut)}
+.seg button.on{background:#fff;color:var(--gd);box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.tpls{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.tpl{border:2px solid var(--line);border-radius:14px;padding:8px 4px 6px;font-size:11px;font-weight:600;text-align:center;background:#fff}
+.tpl.on{border-color:var(--g);background:var(--gp);color:var(--gd)}
+.tpl .sw{height:26px;border-radius:6px;margin-bottom:5px;border:1px solid #ddd;position:relative;overflow:hidden;background:#fff}
+.swatches{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.swc{width:30px;height:30px;border-radius:50%;border:3px solid #fff;box-shadow:0 0 0 1.5px var(--line)}
+.swc.on{box-shadow:0 0 0 2.5px var(--ink)}
+.swatches input[type=color]{width:34px;height:34px;border:0;padding:0;background:none;border-radius:50%}
+.tgl{display:flex;flex-wrap:wrap;gap:7px}
+.tg{padding:7px 12px;border-radius:20px;font-size:12px;font-weight:600;background:#f0f3ea;color:var(--mut);display:inline-flex;gap:5px;align-items:center}
+.tg.on{background:var(--g);color:#fff}
+.prev{background:repeating-conic-gradient(#eef1e9 0 25%,#f7f9f3 0 50%) 0 0/16px 16px;border-radius:18px;padding:18px;display:flex;justify-content:center;align-items:center;min-height:150px}
+.prev svg.lbl{box-shadow:0 6px 18px rgba(0,0,0,.14);border-radius:3px;background:#fff;max-width:100%;height:auto}
+.emojis{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.emojis button{font-size:22px;padding:6px 0;border-radius:12px;background:#f3f6ee}
+.emojis button.on{background:var(--gp);box-shadow:inset 0 0 0 2px var(--g)}
+.switch{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:4px 0}
+.switch b{font-size:13.5px;font-weight:600}
+.switch small{display:block;color:var(--mut);font-size:11.5px;font-weight:400}
+.sw-t{width:46px;height:27px;border-radius:20px;background:#d6dccf;position:relative;flex:none;transition:.2s}
+.sw-t:after{content:"";position:absolute;left:3px;top:3px;width:21px;height:21px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.sw-t.on{background:var(--g)}
+.sw-t.on:after{left:22px}
+/* sheet */
+#sheet{position:fixed;inset:0;z-index:50;display:none}
+#sheet.open{display:block}
+#sheet .ov{position:absolute;inset:0;background:rgba(20,30,10,.45);animation:fade .2s}
+#sheet .pn{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;max-height:93vh;overflow-y:auto;background:var(--bg);border-radius:28px 28px 0 0;padding:10px 18px calc(24px + env(safe-area-inset-bottom));animation:up .28s cubic-bezier(.2,.8,.2,1)}
+#sheet .grab{width:44px;height:5px;border-radius:5px;background:#cfd6c6;margin:2px auto 10px}
+.shh{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.shh h3{margin:0;font-size:19px;font-weight:800;flex:1}
+.x{width:38px;height:38px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:var(--sh)}
+@keyframes up{from{transform:translate(-50%,100%)}}
+@keyframes fade{from{opacity:0}}
+/* dialog */
+#dlg{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;background:rgba(20,30,10,.5);padding:24px}
+#dlg.open{display:flex}
+#dlg .bx{background:#fff;border-radius:24px;padding:22px;max-width:340px;width:100%;text-align:center;animation:pop .2s}
+#dlg .ic{font-size:40px}
+#dlg h4{margin:6px 0 6px;font-size:17px}
+#dlg p{margin:0 0 18px;color:var(--mut);font-size:13.5px}
+@keyframes pop{from{transform:scale(.9);opacity:0}}
+#toast{position:fixed;left:50%;bottom:108px;transform:translateX(-50%) translateY(20px);background:#1f2b14;color:#fff;padding:11px 18px;border-radius:16px;font-size:13px;font-weight:500;opacity:0;transition:.25s;z-index:90;pointer-events:none;max-width:90vw;text-align:center}
+#toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+/* detail */
+.dt-hero{background:#fff;border-radius:24px;padding:16px;display:flex;gap:14px;align-items:center;box-shadow:var(--sh)}
+.dt-hero .em{width:78px;height:78px;border-radius:50%;background:var(--gp);display:grid;place-items:center;font-size:42px;flex:none}
+.dt-hero h3{margin:0;font-size:18px;font-weight:800;line-height:1.2}
+.dt-hero .p{color:var(--g);font-weight:800;font-size:20px;margin-top:3px}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+.kv div{background:#fff;border-radius:16px;padding:10px 12px;box-shadow:var(--sh)}
+.kv small{display:block;color:var(--mut);font-size:11px}
+.kv b{font-size:13.5px;font-weight:600;word-break:break-all}
+.qty{display:flex;align-items:center;background:#fff;border-radius:14px;border:1.5px solid var(--line)}
+.qty button{width:38px;height:40px;display:grid;place-items:center;color:var(--gd)}
+.qty input{width:44px;border:0;text-align:center;font-weight:700;font-size:15px;outline:0;background:none}
+/* scan */
+.scanbox{background:linear-gradient(160deg,#284d0f,#1b330b);border-radius:26px;padding:24px 18px;color:#fff;text-align:center;position:relative;overflow:hidden}
+.scanbox .fr{width:220px;height:130px;margin:6px auto 16px;position:relative;display:grid;place-items:center}
+.scanbox .fr:before,.scanbox .fr:after{content:"";position:absolute;inset:0;border:3px solid #9ee04f;border-radius:18px;clip-path:polygon(0 0,30% 0,30% 6%,6% 6%,6% 30%,0 30%,0 70%,6% 70%,6% 94%,30% 94%,30% 100%,0 100%,0 0,100% 0,100% 30%,94% 30%,94% 6%,70% 6%,70% 0,100% 0,100% 100%,70% 100%,70% 94%,94% 94%,94% 70%,100% 70%,100% 100%)}
+.scanbox .ln{position:absolute;left:8%;right:8%;height:2px;background:#ff5b4a;box-shadow:0 0 12px #ff5b4a;animation:scanl 2s ease-in-out infinite;top:15%}
+@keyframes scanl{50%{top:85%}}
+.scanbox .bars{display:flex;gap:2px;height:70px;align-items:stretch;opacity:.9}
+.scanbox .bars i{background:#fff;display:block}
+.scanbox h3{margin:0;font-size:18px}
+.scanbox p{margin:4px 0 16px;font-size:12.5px;opacity:.75}
+.scanin{display:flex;gap:8px;background:#fff;border-radius:16px;padding:5px 5px 5px 14px;align-items:center}
+.scanin input{flex:1;border:0;outline:0;font-size:15px;padding:9px 0;letter-spacing:1px;color:var(--ink);background:none;min-width:0}
+.scanin button{background:var(--g);color:#fff;border-radius:12px;padding:10px 14px;font-weight:700;font-size:13px}
+.camb{margin-top:12px;display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.14);border-radius:16px;padding:13px;font-weight:600;font-size:14px;width:100%;color:#fff}
+.li{display:flex;align-items:center;gap:12px;background:#fff;border-radius:18px;padding:10px 12px;box-shadow:var(--sh);margin-bottom:10px}
+.li .em{width:46px;height:46px;border-radius:14px;background:var(--gp);display:grid;place-items:center;font-size:24px;flex:none}
+.li .tx{flex:1;min-width:0}
+.li .tx b{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li .tx small{color:var(--mut);font-size:11.5px}
+.tip{background:#fff8e6;border:1px solid #f4e2b4;color:#7a5a12;border-radius:16px;padding:11px 13px;font-size:12px;line-height:1.5;margin-bottom:14px}
+.sheetprev{background:#fff;border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.12);margin:0 auto;position:relative;overflow:hidden}
+.sheetprev svg{position:absolute}
+.loading{display:inline-block;width:16px;height:16px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.catrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.catrow:last-child{border-bottom:0}
+.catrow .e{width:40px;height:40px;border-radius:12px;background:var(--gp);display:grid;place-items:center;font-size:20px}
+.catrow .nm{flex:1;font-weight:600;font-size:13.5px}
+.catrow .nm small{display:block;color:var(--mut);font-weight:400;font-size:11px}
+.icbtn{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:#f3f6ee;color:var(--gd)}
+.icbtn.r{color:var(--red);background:#fdf0ee}
+.icbtn svg{width:18px;height:18px}
+
+/* photos */
+.logo{overflow:hidden}.logo img{width:100%;height:100%;object-fit:cover}
+.cat .c{overflow:hidden}.cat .c img{width:100%;height:100%;object-fit:cover}
+.card .em.ph{width:100%;height:120px;border-radius:16px;overflow:hidden;background:#eef2e8}
+.card .em img,.li .em img,.dt-hero .em img{width:100%;height:100%;object-fit:cover;display:block}
+.li .em{overflow:hidden}
+.bigph{border-radius:24px;overflow:hidden;margin-bottom:12px;box-shadow:var(--sh);background:#eef2e8;aspect-ratio:4/3}
+.bigph img{width:100%;height:100%;object-fit:cover;display:block}
+.dt-hero .alt{font-size:15px;color:var(--gd);font-weight:600}
+.phbox{display:flex;gap:14px;align-items:center}
+.phbox b{display:block;font-size:14px}
+.phbox small{display:block;color:var(--mut);font-size:11.5px}
+.phprev{width:92px;height:92px;border-radius:20px;background:var(--gp);display:grid;place-items:center;font-size:46px;overflow:hidden;flex:none;border:2px dashed #c9dbb0}
+.phprev.round{border-radius:50%;width:70px;height:70px;font-size:34px}
+.phprev img{width:100%;height:100%;object-fit:cover}
+.phbtns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.phbtns .mini{padding:8px 12px}
+.mini.rm{background:#fdf0ee;color:var(--red)}
+.langb{height:34px;padding:0 12px;border-radius:20px;background:#fff;color:var(--gd);font-weight:700;font-size:13px;box-shadow:0 3px 10px rgba(0,0,0,.12)}
+.top .langb{background:var(--gp);box-shadow:none}
+/* urdu */
+html[lang=ur] body,html[lang=ur] button,html[lang=ur] input,html[lang=ur] select,html[lang=ur] textarea{font-family:'Noto Nastaliq Urdu',Poppins,serif}
+html[lang=ur] .app,html[lang=ur] nav.bn,html[lang=ur] #sheet,html[lang=ur] #dlg,html[lang=ur] #toast{line-height:2}
+html[lang=ur] .promo h2,html[lang=ur] .sh h3,html[lang=ur] .card .t,html[lang=ur] .top h2,html[lang=ur] .dt-hero h3,html[lang=ur] .shh h3{line-height:1.9;font-weight:700}
+html[lang=ur] .promo h2{font-size:19px}
+html[lang=ur] .top h2{font-size:20px}
+html[lang=ur] .card .t{font-size:13px;min-height:40px}
+html[lang=ur] .stat span,html[lang=ur] .cat>span:not(.c),html[lang=ur] nav.bn button{font-size:10.5px}
+html[lang=ur] .cat .n{margin-top:-10px}
+html[lang=ur] .promo .pill{letter-spacing:0}
+html[lang=ur] .bc,html[lang=ur] .pr,html[lang=ur] .kv b,html[lang=ur] .stat b{font-family:Poppins,system-ui,sans-serif}
+.ur-in{font-family:'Noto Nastaliq Urdu',serif!important;line-height:2}
+.prn{display:flex;align-items:center;gap:12px;width:100%;text-align:start;background:#f6f8f2;border:2px solid transparent;border-radius:16px;padding:10px 12px;margin-bottom:8px}
+.prn.on{border-color:var(--g);background:var(--gp)}
+.prn .pi{width:40px;height:40px;border-radius:12px;background:#fff;display:grid;place-items:center;font-size:18px;color:#1f6fb2;flex:none}
+.prn .pt{flex:1;min-width:0}.prn b{display:block;font-size:13.5px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prn small{font-size:11px;color:var(--mut)}
+.prn .ck{width:26px;height:26px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center}
+.pact{display:flex;gap:8px}.pact .mini{padding:8px 12px}
+.seg.col{flex-direction:column}
+.catrow .e svg{color:#1f6fb2}
+@media (min-width:520px){.app{box-shadow:0 0 40px rgba(0,0,0,.08)}}
+</style>
+<!--H1-->
+</head>
+<body>
+<!--B0-->
+<script type="application/json" id="bk-state">null</script>
+<script id="bk-app">
+"use strict";
+const APP_JS = document.currentScript.textContent;
+const BODY_HTML = `<div id="splash">
+  <button class="skip" onclick="hideSplash()">Skip</button>
+  <svg class="bob" width="250" height="230" viewBox="0 0 250 230" aria-hidden="true">
+    <path d="M40 120c0-60 50-100 100-95s85 45 80 95-40 85-95 85-85-30-85-85z" fill="#dff0c4"/>
+    <ellipse cx="125" cy="205" rx="85" ry="9" fill="#a8cf74" opacity=".6"/>
+    <rect x="58" y="150" width="134" height="50" rx="12" fill="#3c6e14"/>
+    <rect x="58" y="150" width="134" height="14" rx="7" fill="#4f8a1f"/>
+    <rect x="72" y="104" width="106" height="50" rx="12" fill="#5a9a22"/>
+    <path d="M72 116c0-7 5-12 12-12h82c7 0 12 5 12 12v4c-6 0-6 10-12 10s-6-10-12-10-6 12-12 12-6-12-12-12-6 9-12 9-6-9-12-9-6 12-12 12-6-12-12-12-6 9-12 9z" fill="#f6f2e4"/>
+    <path d="M58 160c0 0 8 10 16 0s16 10 24 0 16 10 24 0 16 10 24 0 16 10 24 0 16 10 22 0" stroke="#f6f2e4" stroke-width="6" fill="none" stroke-linecap="round"/>
+    <rect x="121" y="72" width="8" height="32" rx="3" fill="#ffe08a"/>
+    <path d="M125 52c7 8 7 14 0 18-7-4-7-10 0-18z" fill="#ff8a3d"/>
+    <circle cx="96" cy="100" r="7" fill="#e0483e"/><circle cx="155" cy="100" r="7" fill="#e0483e"/>
+    <g transform="translate(176 58) rotate(18)"><path d="M0 22C4 6 18 0 30 4s18 16 14 26c-8-4-14-2-22 2S4 34 0 22z" fill="#e7a64b"/><path d="M10 10l6 18M20 6l4 22M30 8l0 20" stroke="#b9772a" stroke-width="2.5" stroke-linecap="round"/></g>
+    <g transform="translate(26 70) rotate(-14)"><circle cx="18" cy="18" r="17" fill="#d99b52"/><circle cx="18" cy="18" r="6" fill="#dff0c4"/><path d="M6 12q6-4 10 0M22 26q5 3 9-1" stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none"/></g>
+  </svg>
+  <h1>Bakery<span>.</span></h1>
+  <p>Smart labels, barcodes &amp; printing</p>
+</div>
+<div class="app" id="app"><div id="main"></div></div>
+<nav class="bn" id="nav"></nav>
+<div id="sheet"><div class="ov" data-act="close"></div><div class="pn" id="sheetpn"></div></div>
+<div id="dlg"><div class="bx" id="dlgbx"></div></div>
+<div id="toast"></div>
+<input type="file" id="camfile" accept="image/*" capture="environment" hidden>
+<input type="file" id="photofile" accept="image/*" hidden>
+<input type="file" id="impfile" accept=".json,application/json" hidden>
+`;
+document.body.insertAdjacentHTML('beforeend', BODY_HTML);
+
+/* ---------- source capture for self-publish (must run before any DOM change) ---------- */
+const SRC = document.documentElement.outerHTML;
+const MK = n => '<' + '!--' + n + '-->';
+
+/* ---------- icons ---------- */
+const IC = {
+  home:'<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"/>',
+  tag:'<path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+  scan:'<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2M7 8v8M10 8v8M13.5 8v8M17 8v8"/>',
+  print:'<path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7" rx="1"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  minus:'<path d="M5 12h14"/>',
+  x:'<path d="M18 6L6 18M6 6l12 12"/>',
+  trash:'<path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6M10 11v6M14 11v6"/>',
+  edit:'<path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+  cam:'<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',
+  copy:'<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  dl:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
+  up:'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>',
+  refresh:'<path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15"/>',
+  bar:'<path d="M3 5v14M7 5v14M10 5v14M14 5v14M18 5v14M21 5v14"/>',
+  check:'<path d="M20 6L9 17l-5-5"/>',
+  back:'<path d="M15 18l-6-6 6-6"/>',
+  layers:'<path d="M12 2l10 5-10 5L2 7z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/>',
+  bell:'<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.7 21a2 2 0 0 1-3.4 0"/>'
+};
+const ic = (n, s) => '<svg class="i" viewBox="0 0 24 24"' + (s ? ' style="width:'+s+'px;height:'+s+'px"' : '') + '>' + IC[n] + '</svg>';
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const $ = s => document.querySelector(s);
+const uid = () => Math.random().toString(36).slice(2, 9);
+
+/* ---------- barcode encoders ---------- */
+const EL = ["0001101","0011001","0010011","0111101","0100011","0110001","0101111","0111011","0110111","0001011"];
+const EG = ["0100111","0110011","0011011","0100001","0011101","0111001","0000101","0010001","0001001","0010111"];
+const ER = ["1110010","1100110","1101100","1000010","1011100","1001110","1010000","1000100","1001000","1110100"];
+const EP = ["LLLLLL","LLGLGG","LLGGLG","LLGGGL","LGLLGG","LGGLLG","LGGGLL","LGLGLG","LGLGGL","LGGLGL"];
+const C128 = "212222 222122 222221 121223 121322 131222 122213 122312 132212 221213 221312 231212 112232 122132 122231 113222 123122 123221 223211 221132 221231 213212 223112 312131 311222 321122 321221 312212 322112 322211 212123 212321 232121 111323 131123 131321 112313 132113 132311 211313 231113 231311 112133 112331 132131 113123 113321 133121 313121 211331 231131 213113 213311 213131 311123 311321 331121 312113 312311 332111 314111 221411 431111 111224 111422 121124 121421 141122 141221 112214 112412 122114 122411 142112 142211 241211 221114 413111 241112 134111 111242 121142 121241 114212 124112 124211 411212 421112 421211 212141 214121 412121 111143 111341 131141 114113 114311 411113 411311 113141 114131 311141 411131 211412 211214 211232 2331112".split(" ");
+function eanCheck(d12){ let s = 0; for (let i = 0; i < 12; i++) s += (+d12[i]) * (i % 2 ? 3 : 1); return (10 - s % 10) % 10; }
+function isEAN(c){ return /^\d{13}$/.test(c) && eanCheck(c) == c[12]; }
+function encode(code){
+  code = String(code).trim();
+  if (/^\d{12}$/.test(code) && isEAN('0' + code)) code = '0' + code; // UPC-A
+  if (isEAN(code)) {
+    const par = EP[+code[0]]; let m = '101';
+    for (let i = 1; i <= 6; i++) m += (par[i-1] === 'L' ? EL : EG)[+code[i]];
+    m += '01010';
+    for (let i = 7; i <= 12; i++) m += ER[+code[i]];
+    m += '101';
+    return { mods: m, text: code, type: 'EAN-13' };
+  }
+  const vals = [104];
+  for (const ch of code) { let c = ch.charCodeAt(0); if (c < 32 || c > 126) c = 63; vals.push(c - 32); }
+  let sum = 104; for (let i = 1; i < vals.length; i++) sum += vals[i] * i;
+  vals.push(sum % 103); vals.push(106);
+  let m = '';
+  for (const v of vals) { const p = C128[v]; for (let k = 0; k < p.length; k++) m += (k % 2 ? '0' : '1').repeat(+p[k]); }
+  return { mods: m, text: code, type: 'Code 128' };
+}
+function newBarcode(){
+  let c;
+  do { let d = '2' + String(Math.floor(Math.random()*1e11)).padStart(11, '0'); c = d + eanCheck(d); }
+  while (S && S.items.some(i => i.barcode === c));
+  return c;
+}
+function barsSVG(code, x, y, w, h, ds, color){
+  const e = encode(code); const q = 5; const n = e.mods.length;
+  const mw = w / (n + 2*q); let out = '';
+  let i = 0;
+  while (i < n) {
+    if (e.mods[i] === '1') { let j = i; while (j < n && e.mods[j] === '1') j++; out += '<rect x="'+(x+(q+i)*mw).toFixed(3)+'" y="'+y.toFixed(3)+'" width="'+((j-i)*mw).toFixed(3)+'" height="'+h.toFixed(3)+'"/>'; i = j; }
+    else i++;
+  }
+  let t = '';
+  if (ds > 0) t = '<text x="'+(x+w/2).toFixed(2)+'" y="'+(y+h+ds*0.95).toFixed(2)+'" font-size="'+ds.toFixed(2)+'" text-anchor="middle" letter-spacing="'+(ds*0.12).toFixed(2)+'" font-family="Menlo, Consolas, monospace" fill="#111">'+esc(e.text)+'</text>';
+  return '<g fill="'+(color||'#000')+'">'+out+'</g>'+t;
+}
+
+/* ---------- defaults / seed ---------- */
+const SIZES = ['38x25','40x30','50x25','50x30','58x40','60x40','75x50','100x50'];
+const TPLS = [{id:'classic',n:'Classic',u:'کلاسک'},{id:'modern',n:'Modern',u:'ماڈرن'},{id:'minimal',n:'Minimal',u:'سادہ'},{id:'bold',n:'Bold',u:'بولڈ'}];
+const ACCENTS = ['#4f8a1f','#2e7d32','#c0392b','#d35400','#8e44ad','#1f6fb2','#6d4c41','#111111'];
+const FIELDS = [['shop','Shop name','دکان کا نام'],['name','Item name','انگریزی نام'],['urdu','Urdu name','اردو نام'],['price','Price','قیمت'],['barcode','Barcode','بارکوڈ'],['weight','Weight','وزن'],['mfg','MFG date','تیاری کی تاریخ'],['exp','EXP date','میعاد کی تاریخ'],['cat','Category','کیٹیگری'],['ingr','Ingredients','اجزاء'],['phone','Phone no.','فون نمبر'],['batch','Batch no.','بیچ نمبر'],['halal','Halal mark','حلال نشان'],['veg','Veg / Non-veg mark','ویج / نان ویج نشان']];
+const EMOJIS = ['🥛','🧀','🧈','🍶','🥣','🍦','🥚','🍪','🥠','🥥','🍫','🎂','🍰','🧁','🥧','🍮','🍩','🥐','🥖','🍞','🥯','🥨','🥪','🍔','🍕','🌯','🌭','🍟','🍗','🥟','🥤','☕','🧃','🍬','🍯','🥜'];
+const DEF_LABEL = () => ({tpl:'classic', size:'50x30', accent:'#4f8a1f', fields:{shop:true,name:true,urdu:true,price:true,barcode:true,weight:true,mfg:true,exp:true,cat:false,ingr:false}});
+const UR_NAMES = {'Fresh Milk':'تازہ دودھ','Plain Yogurt (Dahi)':'دہی','Salted Butter':'مکھن','Cheddar Cheese':'چیڈر پنیر','Fresh Cream':'تازہ کریم','Nan Khatai':'نان خطائی','Zeera Biscuits':'زیرہ بسکٹ','Coconut Cookies':'ناریل کوکیز','Choco Chip Cookies':'چاکلیٹ چپ کوکیز','Chocolate Fudge Cake':'چاکلیٹ فج کیک','Pineapple Cake':'پائن ایپل کیک','Black Forest Cake':'بلیک فارسٹ کیک','Red Velvet Cupcake':'ریڈ ویلویٹ کپ کیک','Chicken Patty':'چکن پیٹیز','Club Sandwich':'کلب سینڈوچ','Chicken Burger':'چکن برگر','Pizza Slice':'پیزا سلائس','Chicken Shawarma':'چکن شوارما','Sandwich Bread':'سینڈوچ بریڈ','Cake Rusk':'کیک رس','Milky Bun':'ملکی بن','Butter Croissant':'بٹر کروسان','Glazed Donut':'ڈونٹ','Apple Pie':'ایپل پائی'};
+const CAT_UR = {dairy:'ڈیری',biscuits:'بسکٹ',cakes:'کیک',fastfood:'فاسٹ فوڈ',bread:'ڈبل روٹی اور رس',sweets:'پیسٹری'};
+function seed(){
+  const cats = [
+    {id:'dairy',name:'Dairy',nameUr:'ڈیری',emoji:'🥛'},{id:'biscuits',name:'Biscuits',nameUr:'بسکٹ',emoji:'🍪'},{id:'cakes',name:'Cakes',nameUr:'کیک',emoji:'🎂'},
+    {id:'fastfood',name:'Fast Food',nameUr:'فاسٹ فوڈ',emoji:'🍔'},{id:'bread',name:'Bread & Rusk',nameUr:'ڈبل روٹی اور رس',emoji:'🍞'},{id:'sweets',name:'Pastries',nameUr:'پیسٹری',emoji:'🍩'}];
+  const raw = [
+    ['Fresh Milk','dairy',280,'1 L',3,'🥛','Pasteurized cow milk'],['Plain Yogurt (Dahi)','dairy',160,'500 g',4,'🥣','Milk, culture'],
+    ['Salted Butter','dairy',650,'200 g',30,'🧈','Cream, salt'],['Cheddar Cheese','dairy',890,'200 g',45,'🧀','Milk, salt, enzymes'],['Fresh Cream','dairy',320,'200 ml',7,'🍶','Dairy cream'],
+    ['Nan Khatai','biscuits',450,'500 g',30,'🍪','Flour, ghee, sugar, cardamom'],['Zeera Biscuits','biscuits',380,'400 g',30,'🍪','Flour, butter, cumin'],
+    ['Coconut Cookies','biscuits',420,'400 g',30,'🥥','Flour, coconut, sugar'],['Choco Chip Cookies','biscuits',550,'350 g',25,'🍫','Flour, butter, chocolate'],
+    ['Chocolate Fudge Cake','cakes',1800,'1 lb',4,'🎂','Flour, cocoa, cream, eggs'],['Pineapple Cake','cakes',1600,'1 lb',3,'🍰','Sponge, cream, pineapple'],
+    ['Black Forest Cake','cakes',1900,'2 lb',3,'🎂','Sponge, cherry, chocolate'],['Red Velvet Cupcake','cakes',220,'1 pc',3,'🧁','Flour, cocoa, cream cheese'],
+    ['Chicken Patty','fastfood',120,'1 pc',1,'🥟','Puff pastry, chicken'],['Club Sandwich','fastfood',480,'1 pc',1,'🥪','Bread, chicken, egg, mayo'],
+    ['Chicken Burger','fastfood',550,'1 pc',1,'🍔','Bun, chicken fillet, sauce'],['Pizza Slice','fastfood',350,'1 slice',1,'🍕','Dough, cheese, chicken'],['Chicken Shawarma','fastfood',380,'1 pc',1,'🌯','Pita, chicken, garlic sauce'],
+    ['Sandwich Bread','bread',220,'800 g',4,'🍞','Flour, yeast, milk'],['Cake Rusk','bread',520,'400 g',60,'🥖','Flour, eggs, sugar'],['Milky Bun','bread',60,'1 pc',3,'🥯','Flour, milk, sugar'],
+    ['Butter Croissant','sweets',180,'1 pc',2,'🥐','Flour, butter'],['Glazed Donut','sweets',150,'1 pc',2,'🍩','Flour, sugar glaze'],['Apple Pie','sweets',260,'1 pc',3,'🥧','Pastry, apple, cinnamon']];
+  const items = raw.map((r, i) => {
+    const d = '2026' + String(10000000 + i * 7919).slice(-8); // 12 digits
+    return {id:uid(), name:r[0], nameUr:UR_NAMES[r[0]]||'', photo:'', veg: r[1] === 'fastfood' ? 'nonveg' : 'veg', batch:'', cat:r[1], price:r[2], weight:r[3], shelf:r[4], emoji:r[5], ingr:r[6], barcode: d + eanCheck(d), stock: 20, label:null, created: Date.now() - i*1000};
+  });
+  return {v:1, savedAt:0, settings:{lang:'ur', shop:'Shahi Bakers', shopUr:'شاہی بیکرز', tagline:'Fresh every morning', taglineUr:'روزانہ تازہ', phone:'0300-1234567', currency:'Rs', label:DEF_LABEL()},
+    categories:cats, items, queue:[], print:{mode:'a4', gap:2, printer:'p1'}, printers:seedPrinters(), recent:[]};
+}
+
+/* ---------- state + persistence ---------- */
+let S = null, ART = null, DL = null, pubTimer = null, dirty = false, syncState = 'local';
+(function load(){
+  let emb = null, loc = null;
+  try { emb = JSON.parse($('#bk-state').textContent); } catch(e) {}
+  try { loc = JSON.parse(localStorage.getItem('bk-state') || 'null'); } catch(e) {}
+  if (emb && loc && (loc.savedAt || 0) > (emb.savedAt || 0)) { S = loc; dirty = true; }
+  else S = emb || loc || seed();
+  S.recent = S.recent || []; S.queue = S.queue || []; S.print = S.print || {mode:'a4', gap:2};
+  if (!S.printers || !S.printers.length) { S.printers = seedPrinters(); S.print.printer = S.print.mode === 'roll' ? 'p1' : 'p2'; }
+  const st = S.settings;
+  if (!st.lang) { st.lang = 'ur'; if (st.shop === 'Shahi Bakers' && !st.shopUr) st.shopUr = 'شاہی بیکرز'; if (!st.taglineUr) st.taglineUr = 'روزانہ تازہ'; }
+  const fixL = L => { if (L && L.fields && L.fields.urdu === undefined) L.fields.urdu = true; };
+  fixL(st.label);
+  S.categories.forEach(c => { if (c.nameUr === undefined) c.nameUr = CAT_UR[c.id] || ''; });
+  S.items.forEach(i => { if (i.nameUr === undefined) i.nameUr = UR_NAMES[i.name] || ''; if (i.photo === undefined) i.photo = ''; if (i.veg === undefined) i.veg = i.cat === 'fastfood' ? 'nonveg' : (['dairy','biscuits','bread','cakes','sweets'].includes(i.cat) ? 'veg' : ''); fixL(i.label); });
+})();
+function save(){
+  S.savedAt = Date.now();
+  try { localStorage.setItem('bk-state', JSON.stringify(S)); } catch(e) {}
+  dirty = true; schedulePublish();
+}
+function schedulePublish(){
+  if (!ART) { setSync(); return; }
+  clearTimeout(pubTimer);
+  syncState = 'pending'; setSync();
+  pubTimer = setTimeout(doPublish, 2500);
+}
+const HEADSRC = (() => { const h0 = SRC.indexOf(MK('H0')), h1 = SRC.indexOf(MK('H1')); return (h0 >= 0 && h1 > h0) ? SRC.slice(h0, h1 + MK('H1').length) : ''; })();
+function buildDoc(){
+  const sc = 'scr' + 'ipt';
+  const json = JSON.stringify(S).replace(/</g, '\\u003c');
+  return '<!DOCTYPE html>\n<html lang="en">\n<head>\n' + HEADSRC + '\n</head>\n<body>\n<' + sc + ' type="application/json" id="bk-state">' + json + '</' + sc + '>\n<' + sc + ' id="bk-app">' + APP_JS + '</' + sc + '>\n</body>\n</html>\n';
+}
+function docOK(d){ return HEADSRC.length > 5000 && HEADSRC.indexOf('<style>') >= 0 && APP_JS.length > 20000 && APP_JS.indexOf('BODY_HTML') >= 0 && d.indexOf('id="bk-state"') > 0; }
+async function doPublish(){
+  if (!ART || !dirty) return;
+  if ($('#sheet').classList.contains('open') || $('#dlg').classList.contains('open') || (document.activeElement && /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && document.activeElement.id !== 'q')) { pubTimer = setTimeout(doPublish, 2500); return; }
+  syncState = 'saving'; setSync();
+  try {
+    sessionStorage.setItem('bk-view', JSON.stringify({view, cat:curCat, y:window.scrollY}));
+    const doc = buildDoc();
+    if (!docOK(doc)) { ART = null; syncState = 'local'; setSync(); return; }
+    dirty = false;
+    await ART.publish(doc);
+    syncState = 'saved'; setSync();
+  } catch(e) {
+    const c = e && e.code;
+    if (c === 'conflict') { syncState = 'saved'; return; }
+    dirty = true; ART = (c === 'not_granted' || c === 'not_writer') ? null : ART; syncState = 'local'; setSync();
+  }
+}
+function setSync(){
+  const el = document.getElementById('sync'); if (!el) return;
+  let t = tr('Saved on this device','اس ڈیوائس پر محفوظ'), busy = false;
+  if (ART) { if (syncState === 'pending' || syncState === 'saving') { t = tr('Saving…','محفوظ ہو رہا ہے…'); busy = true; } else t = dirty ? tr('Unsaved','محفوظ نہیں') : tr('All changes saved','سب محفوظ ہے'); }
+  el.className = 'sync' + (busy ? ' busy' : ''); el.innerHTML = '<i></i>' + t;
+}
+
+/* ---------- helpers ---------- */
+const UR = () => S.settings.lang === 'ur';
+const tr = (en, ur) => UR() ? ur : en;
+const iName = it => (UR() && it.nameUr) ? it.nameUr : it.name;
+const cName = c => (UR() && c.nameUr) ? c.nameUr : c.name;
+const pic = it => it.photo ? '<img src="' + it.photo + '" alt="">' : (it.emoji || '📦');
+function resizeImg(file, max, q){
+  return new Promise((res, rej) => {
+    const url = URL.createObjectURL(file); const img = new Image();
+    img.onload = () => { const k = Math.min(1, max / Math.max(img.width, img.height)); const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', q || 0.78)); };
+    img.onerror = rej; img.src = url;
+  });
+}
+const catOf = id => S.categories.find(c => c.id === id) || {name:'Other', nameUr:'دیگر', emoji:'📦', id};
+const money = n => S.settings.currency + ' ' + Number(n || 0).toLocaleString('en-US', {maximumFractionDigits:2});
+const labelOf = it => it.label || S.settings.label;
+const qOf = id => (S.queue.find(q => q.id === id) || {}).qty || 0;
+const batchOf = it => it.batch || ('B' + (() => { const d = new Date(); return String(d.getFullYear()).slice(2) + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0'); })());
+const fmtD = d => String(d.getDate()).padStart(2,'0') + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getFullYear()).slice(2);
+function dates(it){ const m = new Date(); const e = new Date(m.getTime() + (+it.shelf || 0) * 864e5); return [fmtD(m), fmtD(e)]; }
+function toast(t){ const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 2200); }
+function loadScript(src){ if (window.AndroidApp) { const f = src.split('/').pop(); if (f === 'jspdf.umd.min.js' || f === 'jszip.min.js') src = 'lib/' + f; } return new Promise((res, rej) => { if (document.querySelector('script[src="'+src+'"]')) return res(); const s = document.createElement('script'); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
+function confirmBox(icon, title, msg, ok, danger){
+  return new Promise(res => {
+    $('#dlgbx').innerHTML = '<div class="ic">'+icon+'</div><h4>'+esc(title)+'</h4><p>'+esc(msg)+'</p><div class="btns2"><button class="btn sec2" id="dno">'+tr('Cancel','منسوخ')+'</button><button class="btn'+(danger?'" style="background:#e0483e;box-shadow:none"':'"')+' id="dok">'+esc(ok)+'</button></div>';
+    $('#dlg').classList.add('open');
+    const done = v => { $('#dlg').classList.remove('open'); res(v); };
+    $('#dno').onclick = () => done(false); $('#dok').onclick = () => done(true);
+  });
+}
+
+/* ---------- label renderer (SVG, mm units) ---------- */
+function fitText(t, size, maxW){ const cw = size * 0.56; const n = Math.max(2, Math.floor(maxW / cw)); return t.length > n ? t.slice(0, n - 1) + '…' : t; }
+function txt(t, x, y, s, fill, wt, anchor, maxW){
+  return '<text x="'+x.toFixed(2)+'" y="'+y.toFixed(2)+'" font-size="'+s.toFixed(2)+'" font-weight="'+wt+'" fill="'+fill+'" text-anchor="'+anchor+'" font-family="Helvetica, Arial, sans-serif">'+esc(fitText(String(t), s, maxW))+'</text>';
+}
+function labelSVG(it, L, pxW, cls){
+  const [W, H] = L.size.split('x').map(Number);
+  const f = L.fields, A = L.accent, tpl = L.tpl;
+  const p = Math.max(1.3, Math.min(W, H) * 0.06);
+  const maxW = W - 2*p;
+  const center = tpl !== 'minimal';
+  const tx = center ? W/2 : p, an = center ? 'middle' : 'start';
+  const o = ['<rect width="'+W+'" height="'+H+'" fill="#fff"/>'];
+  let y = p * 0.9;
+  const vegT = f.veg && (it.veg === 'veg' || it.veg === 'nonveg') ? it.veg : '';
+  const nb = (f.halal ? 1 : 0) + (vegT ? 1 : 0);
+  const bs = Math.min(H * 0.18, W * 0.13), bgap = 0.6;
+  const used = nb ? nb * (bs + bgap) : 0;
+  const topMax = center ? maxW - 2 * used : maxW - used;
+  if (tpl === 'classic') o.push('<rect x=".45" y=".45" width="'+(W-.9)+'" height="'+(H-.9)+'" rx="1.8" fill="none" stroke="'+A+'" stroke-width=".5"/>');
+  if (tpl === 'bold') o.push('<rect x=".5" y=".5" width="'+(W-1)+'" height="'+(H-1)+'" rx="1" fill="none" stroke="#111" stroke-width="1"/>');
+  if (tpl === 'minimal') o.push('<rect x="0" y="0" width="1.4" height="'+H+'" fill="'+A+'"/>');
+  if (tpl === 'modern') {
+    const bh = H * 0.2; o.push('<rect width="'+W+'" height="'+bh+'" fill="'+A+'"/>');
+    if (f.shop) { const s = bh * 0.55; o.push(txt(S.settings.shop, tx, bh/2 + s*0.36, s, '#fff', 700, an, topMax)); }
+    y = bh + p * 0.4;
+  } else if (f.shop) { const s = H * 0.08; y += s * 0.8; o.push(txt(S.settings.shop.toUpperCase(), tx, y, s, A, 700, an, topMax)); y += s * 0.35; }
+  if (f.phone && S.settings.phone) { const s = H * 0.058; y += s; o.push(txt('Ph: ' + S.settings.phone, tx, y, s, '#555', 500, an, topMax)); y += s * 0.35; }
+  if (nb) {
+    const by = tpl === 'modern' ? Math.max(0.5, (H * 0.2 - bs) / 2) : p * 0.6;
+    let bx = W - p * 0.8 - bs;
+    if (f.halal) {
+      const r = bs / 2, cx = bx + r, cy = by + r;
+      o.push('<circle cx="'+cx.toFixed(2)+'" cy="'+cy.toFixed(2)+'" r="'+(r-0.15).toFixed(2)+'" fill="#fff" stroke="#17803a" stroke-width=".35"/>');
+      o.push('<text x="'+cx.toFixed(2)+'" y="'+(cy + r*0.12).toFixed(2)+'" font-size="'+(r*0.78).toFixed(2)+'" text-anchor="middle" font-weight="700" fill="#17803a" font-family="\'Noto Nastaliq Urdu\', \'Noto Naskh Arabic\', serif">حلال</text>');
+      o.push('<text x="'+cx.toFixed(2)+'" y="'+(cy + r*0.68).toFixed(2)+'" font-size="'+(r*0.3).toFixed(2)+'" text-anchor="middle" font-weight="700" fill="#17803a" font-family="Helvetica, Arial, sans-serif" letter-spacing=".1">HALAL</text>');
+      bx -= bs + bgap;
+    }
+    if (vegT) {
+      const col = vegT === 'veg' ? '#1b8a3a' : '#8b2d1d', q = bs * 0.82, qx = bx + (bs - q), qy = by + (bs - q) / 2;
+      o.push('<rect x="'+qx.toFixed(2)+'" y="'+qy.toFixed(2)+'" width="'+q.toFixed(2)+'" height="'+q.toFixed(2)+'" rx=".3" fill="#fff" stroke="'+col+'" stroke-width=".4"/>');
+      const cx = qx + q/2, cy = qy + q/2, rr = q * 0.28;
+      o.push(vegT === 'veg' ? '<circle cx="'+cx.toFixed(2)+'" cy="'+cy.toFixed(2)+'" r="'+rr.toFixed(2)+'" fill="'+col+'"/>'
+        : '<path d="M'+cx.toFixed(2)+' '+(cy-rr).toFixed(2)+'L'+(cx+rr*1.1).toFixed(2)+' '+(cy+rr*0.8).toFixed(2)+'L'+(cx-rr*1.1).toFixed(2)+' '+(cy+rr*0.8).toFixed(2)+'Z" fill="'+col+'"/>');
+    }
+  }
+  if (f.name) {
+    const nm = tpl === 'bold' ? it.name.toUpperCase() : it.name;
+    let s = H * (tpl === 'bold' ? 0.14 : 0.13);
+    if (nm.length * s * 0.56 > maxW) s = Math.max(H * 0.095, maxW / (nm.length * 0.56));
+    if (nm.length * s * 0.56 > topMax && y < p + bs) s = Math.max(H * 0.09, topMax / (nm.length * 0.56));
+    y += s * 0.92; o.push(txt(nm, tx, y, s, '#111', 700, an, y - s < p + bs ? topMax : maxW)); y += s * 0.28;
+  }
+  if (f.urdu && it.nameUr) {
+    const s = H * 0.105; y += s * 1.15;
+    o.push('<text x="'+(center ? W/2 : W - p).toFixed(2)+'" y="'+y.toFixed(2)+'" font-size="'+s.toFixed(2)+'" font-weight="700" fill="#222" text-anchor="'+(center?'middle':'start')+'" direction="rtl" font-family="\'Noto Nastaliq Urdu\', \'Jameel Noori Nastaleeq\', \'Urdu Typesetting\', serif">'+esc(fitText(it.nameUr, s, maxW))+'</text>');
+    y += s * 0.45;
+  }
+  const meta = [];
+  if (f.weight && it.weight) meta.push(it.weight);
+  if (f.cat) meta.push(catOf(it.cat).name);
+  if (f.batch) meta.push('Batch ' + batchOf(it));
+  if (meta.length) { const s = H * 0.068; y += s; o.push(txt(meta.join('  •  '), tx, y, s, '#444', 500, an, maxW)); y += s * 0.3; }
+  if (f.mfg || f.exp) {
+    const [m, e] = dates(it); const s = H * 0.064; y += s;
+    if (f.mfg && f.exp) {
+      const gap = Math.max(2.5, W * 0.07); const half = (maxW - gap) / 2;
+      if (center) { o.push(txt('MFG ' + m, W/2 - gap/2, y, s, '#222', 600, 'end', half)); o.push(txt('EXP ' + e, W/2 + gap/2, y, s, '#222', 600, 'start', half)); }
+      else { o.push(txt('MFG ' + m, p, y, s, '#222', 600, 'start', half)); o.push(txt('EXP ' + e, p + half + gap, y, s, '#222', 600, 'start', half)); }
+    } else o.push(txt(f.mfg ? 'MFG ' + m : 'EXP ' + e, tx, y, s, '#222', 600, an, maxW));
+    y += s * 0.3;
+  }
+  if (f.ingr && it.ingr) { const s = H * 0.054; y += s; o.push(txt('Ingredients: ' + it.ingr, tx, y, s, '#555', 400, an, maxW)); y += s * 0.3; }
+  y += p * 0.35;
+  const avail = H - p * 0.85 - y;
+  const ps = money(it.price);
+  if (f.barcode && it.barcode && avail > 3) {
+    const bw = f.price ? maxW * 0.6 : maxW;
+    const ds = Math.min(H * 0.068, avail * 0.24); const bh = avail - ds - 0.35;
+    o.push(barsSVG(it.barcode, p - (f.price ? 1 : 0), y, bw, bh, ds));
+    if (f.price) {
+      const area = maxW - bw - 0.5; const ax = W - p - area;
+      let s = Math.min(avail * 0.4, H * 0.17, area / (ps.length * 0.6));
+      if (tpl === 'bold') {
+        o.push('<rect x="'+ax.toFixed(2)+'" y="'+y.toFixed(2)+'" width="'+area.toFixed(2)+'" height="'+avail.toFixed(2)+'" rx="1.2" fill="'+A+'"/>');
+        o.push(txt('PRICE', ax + area/2, y + avail/2 - s*0.55, s*0.42, '#fff', 600, 'middle', area));
+        o.push(txt(ps, ax + area/2, y + avail/2 + s*0.55, s, '#fff', 800, 'middle', area));
+      } else {
+        o.push(txt('PRICE', W - p, y + avail/2 - s*0.5, s*0.42, '#777', 600, 'end', area));
+        o.push(txt(ps, W - p, y + avail/2 + s*0.6, s, A, 800, 'end', area));
+      }
+    }
+  } else if (f.price) {
+    const s = Math.max(2, Math.min(avail * 0.7, H * 0.24));
+    o.push(txt(ps, W/2, y + avail/2 + s*0.36, s, A, 800, 'middle', maxW));
+  }
+  const pw = pxW || W * 5;
+  return '<svg xmlns="http://www.w3.org/2000/svg" direction="ltr" style="direction:ltr" class="'+(cls||'lbl')+'" viewBox="0 0 '+W+' '+H+'" width="'+pw+'" height="'+(pw*H/W).toFixed(1)+'">'+o.join('')+'</svg>';
+}
+
+/* ---------- views ---------- */
+let view = 'home', curCat = 'all', qStr = '';
+try { const sv = JSON.parse(sessionStorage.getItem('bk-view') || 'null'); if (sv) { view = sv.view; curCat = sv.cat; setTimeout(() => window.scrollTo(0, sv.y || 0), 60); sessionStorage.removeItem('bk-view'); } } catch(e) {}
+const hv = (location.hash || '').slice(1); if (['home','labels','scan','print','more'].includes(hv)) view = hv;
+
+function applyLang(){
+  const ur = S.settings.lang === 'ur';
+  document.documentElement.lang = ur ? 'ur' : 'en';
+  document.documentElement.dir = ur ? 'rtl' : 'ltr';
+}
+function go(v){ view = v; try { history.replaceState(null, '', '#' + v); } catch(e) {} render(); window.scrollTo(0, 0); }
+function renderNav(){
+  const n = S.queue.reduce((a, q) => a + q.qty, 0);
+  const b = (v, i, t) => '<button data-act="go" data-v="'+v+'" class="'+(view===v?'on':'')+'">'+ic(i)+t+(v==='print'&&n?'<span class="bdg">'+n+'</span>':'')+'</button>';
+  $('#nav').innerHTML = b('home','home',tr('Home','ہوم')) + b('labels','tag',tr('Labels','لیبل')) + '<button data-act="go" data-v="scan" aria-label="Scan"><span class="scan">'+ic('scan')+'</span></button>' + b('print','print',tr('Print','پرنٹ')) + b('more','gear',tr('Settings','سیٹنگز'));
+}
+function render(){
+  applyLang(); renderNav();
+  const m = $('#main');
+  if (view === 'home') m.innerHTML = vHome();
+  else if (view === 'labels') m.innerHTML = vLabels();
+  else if (view === 'scan') m.innerHTML = vScan();
+  else if (view === 'print') m.innerHTML = vPrint();
+  else m.innerHTML = vMore();
+  setSync();
+  if (view === 'home') renderGrid();
+  if (view === 'print') renderSheetPrev();
+  if (view === 'scan') setTimeout(() => { const i = $('#scanin'); if (i && window.matchMedia('(pointer:fine)').matches) i.focus(); }, 50);
+}
+const langBtn = () => '<button class="langb" data-act="lang">'+(S.settings.lang==='ur' ? 'EN' : 'اردو')+'</button>';
+
+function vHome(){
+  const s = S.settings, qn = S.queue.reduce((a, q) => a + q.qty, 0);
+  const cats = [{id:'all', name:'All', nameUr:'سب', emoji:'🧺'}].concat(S.categories);
+  const shopName = UR() && s.shopUr ? s.shopUr : s.shop;
+  return '<header class="hero"><div class="hrow"><div class="logo">'+(s.logo ? '<img src="'+s.logo+'" alt="">' : '🥐')+'</div><div class="sp"><small>'+esc(UR() && s.taglineUr ? s.taglineUr : (s.tagline || 'Label Studio'))+'</small><b>'+esc(shopName)+'</b><div><span class="sync" id="sync"></span></div></div>'+
+    langBtn()+'<button class="icb" data-act="go" data-v="print">'+ic('print')+'</button></div>'+
+    '<div class="promo"><div style="flex:1;min-width:0"><span class="pill">'+tr('LABEL STUDIO','لیبل اسٹوڈیو')+'</span><h2>'+tr('Print smart<br><span>bakery labels</span>','اسمارٹ بیکری<br><span>لیبل پرنٹ کریں</span>')+'</h2><p>'+tr('Price, barcode, MFG &amp; EXP — one tap.','قیمت، بارکوڈ اور تاریخیں — ایک ٹچ میں')+'</p>'+
+    '<div class="btns"><button class="chipw" data-act="add">'+ic('plus',14)+tr('Add item','نیا آئٹم')+'</button><button class="chipg" data-act="go" data-v="scan">'+tr('Scan','اسکین')+'</button></div></div>'+
+    '<div style="width:112px;flex:none" dir="ltr">'+labelSVG(S.items[0] || {name:'Sample',price:100,barcode:'2026100000006',weight:'1 pc',shelf:3}, S.settings.label, 112)+'</div></div>'+
+    '<div class="search">'+ic('search')+'<input id="q" placeholder="'+tr('Search items, barcode…','آئٹم یا بارکوڈ تلاش کریں…')+'" value="'+esc(qStr)+'" autocomplete="off"></div></header>'+
+    '<div class="sec"><div class="stats"><div class="stat"><b>'+S.items.length+'</b><span>'+tr('Items','آئٹمز')+'</span></div><div class="stat"><b>'+S.categories.length+'</b><span>'+tr('Categories','کیٹیگریز')+'</span></div><div class="stat"><b>'+qn+'</b><span>'+tr('Labels queued','پرنٹ لیبلز')+'</span></div></div>'+
+    '<div class="sh"><h3>'+tr('Categories','کیٹیگریز')+'</h3><button data-act="catmgr">'+tr('Manage','ترتیب دیں')+'</button></div>'+
+    '<div class="cats">'+cats.map(c => { const n = c.id==='all' ? S.items.length : S.items.filter(i => i.cat===c.id).length; return '<button class="cat '+(curCat===c.id?'on':'')+'" data-act="cat" data-id="'+c.id+'"><span class="c">'+(c.photo?'<img src="'+c.photo+'" alt="">':c.emoji)+'</span><span>'+esc(cName(c))+'</span><span class="n">'+n+' '+tr('items','آئٹمز')+'</span></button>'; }).join('')+
+    '<button class="cat" data-act="catadd"><span class="c" style="color:var(--g)">'+ic('plus',26)+'</span><span>'+tr('New','نئی')+'</span></button></div>'+
+    '<div class="sh"><h3>'+tr('Quick actions','فوری کام')+'</h3></div><div class="quick">'+
+    '<button class="qk" data-act="add"><span class="qi">'+ic('plus')+'</span>'+tr('Add item','نیا آئٹم')+'</button>'+
+    '<button class="qk" data-act="go" data-v="scan"><span class="qi">'+ic('scan')+'</span>'+tr('Scan','اسکین')+'</button>'+
+    '<button class="qk" data-act="go" data-v="labels"><span class="qi">'+ic('tag')+'</span>'+tr('Design','ڈیزائن')+'</button>'+
+    '<button class="qk" data-act="go" data-v="print"><span class="qi">'+ic('print')+'</span>'+tr('Print','پرنٹ')+'</button></div>'+
+    '<div id="grid"></div></div>';
+}
+function card(it){
+  const q = qOf(it.id);
+  return '<div class="card" data-act="open" data-id="'+it.id+'"><div class="t">'+esc(iName(it))+'</div><div class="pr" dir="ltr">'+money(it.price)+'</div>'+
+    '<span class="tagc" title="Custom label">'+(it.label?'🏷️':'')+'</span>'+
+    '<div class="em'+(it.photo?' ph':'')+'">'+pic(it)+'</div><div class="mt">⚖️ <span dir="ltr">'+esc(it.weight||'—')+'</span><br>⏱ <b>'+(it.shelf||0)+' '+tr('days','دن')+'</b> '+tr('shelf life','شیلف لائف')+'</div><div class="bc">'+esc(it.barcode||'')+'</div>'+
+    (q?'<span class="qb">×'+q+'</span>':'')+'<button class="plus" data-act="q+" data-id="'+it.id+'" aria-label="Add to print">'+ic('plus')+'</button></div>';
+}
+function renderGrid(){
+  const g = $('#grid'); if (!g) return;
+  const q = qStr.trim().toLowerCase();
+  let list = S.items.filter(i => (curCat === 'all' || i.cat === curCat) && (!q || i.name.toLowerCase().includes(q) || (i.nameUr||'').includes(q) || (i.barcode||'').includes(q) || cName(catOf(i.cat)).toLowerCase().includes(q)));
+  if (!list.length) { g.innerHTML = '<div class="empty"><div class="e">🧁</div><p>'+tr('No items found.','کوئی آئٹم نہیں ملا۔')+'</p><button class="btn" style="max-width:220px;margin:0 auto" data-act="add">'+ic('plus')+tr('Add item','نیا آئٹم')+'</button></div>'; return; }
+  if (curCat === 'all' && !q) {
+    g.innerHTML = S.categories.concat([{id:'__o', name:'Other', nameUr:'دیگر', emoji:'📦'}]).map(c => {
+      const its = c.id === '__o' ? list.filter(i => !S.categories.some(k => k.id === i.cat)) : list.filter(i => i.cat === c.id);
+      if (!its.length) return '';
+      return '<div class="sh"><h3>'+c.emoji+' '+esc(cName(c))+'</h3>'+(c.id!=='__o'?'<button data-act="cat" data-id="'+c.id+'">'+tr('See All','سب دیکھیں')+'</button>':'')+'</div><div class="grid">'+its.slice(0, 4).map(card).join('')+'</div>';
+    }).join('');
+  } else {
+    g.innerHTML = '<div class="sh"><h3>'+(q ? tr('Results','نتائج')+' ('+list.length+')' : catOf(curCat).emoji+' '+esc(cName(catOf(curCat))))+'</h3><button data-act="qall">'+tr('+ All to print','+ سب پرنٹ میں')+'</button></div><div class="grid">'+list.map(card).join('')+'</div>';
+  }
+}
+
+/* label design controls (shared) */
+function labelCtrls(L, scope){
+  return '<div class="lc" data-scope="'+scope+'">'+
+  '<div class="f"><span>'+tr('Template','ٹیمپلیٹ')+'</span><div class="tpls">'+TPLS.map(t => '<button type="button" class="tpl '+(L.tpl===t.id?'on':'')+'" data-lc="tpl" data-v="'+t.id+'"><div class="sw">'+tplThumb(t.id, L.accent)+'</div>'+tr(t.n, t.u)+'</button>').join('')+'</div></div>'+
+  '<div class="f"><span>'+tr('Label size (mm)','لیبل سائز (mm)')+'</span><div class="tgl" dir="ltr">'+SIZES.map(s => '<button type="button" class="tg '+(L.size===s?'on':'')+'" data-lc="size" data-v="'+s+'">'+s.replace('x',' × ')+'</button>').join('')+'</div>'+
+  '<div class="row2" style="margin-top:8px"><input class="in" type="number" min="15" max="150" placeholder="W" data-lc="w" value="'+L.size.split('x')[0]+'"><input class="in" type="number" min="10" max="150" placeholder="H" data-lc="h" value="'+L.size.split('x')[1]+'"></div></div>'+
+  '<div class="f"><span>'+tr('Accent color','رنگ')+'</span><div class="swatches">'+ACCENTS.map(a => '<button type="button" class="swc '+(L.accent===a?'on':'')+'" style="background:'+a+'" data-lc="accent" data-v="'+a+'"></button>').join('')+'<input type="color" data-lc="color" value="'+L.accent+'"></div></div>'+
+  '<div class="f"><span>'+tr('What to show on the label','لیبل پر کیا دکھانا ہے')+'</span><div class="tgl">'+FIELDS.map(([k, n, u]) => '<button type="button" class="tg '+(L.fields[k]?'on':'')+'" data-lc="field" data-v="'+k+'">'+(L.fields[k]?'✓ ':'')+tr(n, u)+'</button>').join('')+'</div></div></div>';
+}
+function tplThumb(id, a){
+  if (id === 'modern') return '<i style="position:absolute;left:0;right:0;top:0;height:8px;background:'+a+'"></i><i style="position:absolute;left:6px;right:20px;top:13px;height:3px;background:#333"></i><i style="position:absolute;left:6px;width:20px;bottom:4px;height:6px;background:repeating-linear-gradient(90deg,#000 0 1px,#fff 1px 2px)"></i>';
+  if (id === 'minimal') return '<i style="position:absolute;left:0;top:0;bottom:0;width:3px;background:'+a+'"></i><i style="position:absolute;left:7px;right:18px;top:6px;height:3px;background:#333"></i><i style="position:absolute;left:7px;width:20px;bottom:4px;height:7px;background:repeating-linear-gradient(90deg,#000 0 1px,#fff 1px 2px)"></i>';
+  if (id === 'bold') return '<i style="position:absolute;inset:1px;border:2px solid #111;border-radius:2px"></i><i style="position:absolute;left:6px;right:14px;top:6px;height:4px;background:#111"></i><i style="position:absolute;right:4px;width:14px;bottom:4px;height:9px;background:'+a+'"></i>';
+  return '<i style="position:absolute;inset:2px;border:1.5px solid '+a+';border-radius:4px"></i><i style="position:absolute;left:12px;right:12px;top:7px;height:3px;background:#333"></i><i style="position:absolute;left:8px;width:20px;bottom:5px;height:7px;background:repeating-linear-gradient(90deg,#000 0 1px,#fff 1px 2px)"></i>';
+}
+function applyLC(L, el){
+  const k = el.dataset.lc, v = el.dataset.v;
+  if (k === 'tpl') L.tpl = v;
+  else if (k === 'size') L.size = v;
+  else if (k === 'accent') L.accent = v;
+  else if (k === 'color') L.accent = el.value;
+  else if (k === 'field') L.fields[v] = !L.fields[v];
+  else if (k === 'w' || k === 'h') {
+    const sc = el.closest('.lc'); const w = Math.min(150, Math.max(15, +sc.querySelector('[data-lc=w]').value || 50)); const h = Math.min(150, Math.max(10, +sc.querySelector('[data-lc=h]').value || 30));
+    L.size = w + 'x' + h; return false;
+  }
+  return true;
+}
+
+let lblSample = null;
+function vLabels(){
+  const it = S.items.find(i => i.id === lblSample) || S.items[0] || {name:'Sample Cake', price:1200, weight:'1 lb', shelf:3, barcode:'2026100000006', cat:'cakes'};
+  const custom = S.items.filter(i => i.label);
+  return '<div class="top"><div style="flex:1"><h2>'+tr('Label Designer','لیبل ڈیزائنر')+'</h2><div class="sub">'+tr('Default design — used on every item','ڈیفالٹ ڈیزائن — ہر آئٹم پر لگتا ہے')+'</div></div>'+langBtn()+'</div><div class="sec">'+
+    '<div class="panel"><div class="prev" id="lprev" dir="ltr">'+labelSVG(it, S.settings.label, Math.min(330, window.innerWidth - 80))+'</div>'+
+    '<label class="f" style="margin:12px 0 0"><span>'+tr('Preview item','نمونہ آئٹم')+'</span><select class="in" id="lsample">'+S.items.map(i => '<option value="'+i.id+'" '+(i.id===it.id?'selected':'')+'>'+esc(i.emoji+' '+iName(i))+'</option>').join('')+'</select></label></div>'+
+    '<div class="panel">'+labelCtrls(S.settings.label, 'default')+'</div>'+
+    '<div class="panel"><h4>🏷️ '+tr('Custom labels','الگ لیبل')+' ('+custom.length+')</h4>'+(custom.length ? custom.map(i => '<div class="li" style="box-shadow:none;background:#f6f8f2"><div class="em">'+pic(i)+'</div><div class="tx"><b>'+esc(iName(i))+'</b><small>'+i.label.tpl+' • '+i.label.size+' mm</small></div><button class="icbtn" data-act="edit" data-id="'+i.id+'">'+ic('edit')+'</button></div>').join('') : '<p style="margin:0;font-size:12.5px;color:var(--mut)">'+tr('Edit any item and turn on "Separate label for this item" to give it its own design.','کسی بھی آئٹم میں ترمیم کر کے "اس آئٹم کا الگ لیبل" آن کریں — اس کا ڈیزائن الگ ہو جائے گا۔')+'</p>')+'</div>'+
+    '<button class="btn sec2" data-act="lreset">'+ic('refresh',18)+tr('Reset default design','ڈیفالٹ ڈیزائن واپس لائیں')+'</button></div>';
+}
+
+function vScan(){
+  const rec = S.recent.map(r => S.items.find(i => i.barcode === r)).filter(Boolean).slice(0, 6);
+  let bars = ''; for (let i = 0; i < 38; i++) bars += '<i style="width:'+(1 + (i*7 % 4))+'px"></i>';
+  return '<div class="top"><div style="flex:1"><h2>'+tr('Barcode Scanner','بارکوڈ اسکینر')+'</h2><div class="sub">'+tr('Scan — find the item or add a new one','اسکین کریں — آئٹم ملے گا یا نیا بن جائے گا')+'</div></div></div><div class="sec">'+
+    '<div class="scanbox"><div class="fr" dir="ltr"><div class="bars">'+bars+'</div><div class="ln"></div></div><h3>'+tr('Ready to scan','اسکین کے لیے تیار')+'</h3><p>'+tr('Use a USB / Bluetooth scanner, or type the code','USB / بلوٹوتھ اسکینر سے اسکین کریں یا کوڈ لکھیں')+'</p>'+
+    '<form class="scanin" id="scanform"><input id="scanin" inputmode="numeric" dir="ltr" placeholder="'+tr('Barcode…','بارکوڈ…')+'" autocomplete="off"><button type="submit">'+tr('Find','تلاش')+'</button></form>'+
+    '<button class="camb" data-act="cam">'+ic('cam')+tr('Scan from camera photo','کیمرے کی تصویر سے اسکین')+'</button></div>'+
+    '<div class="tip" style="margin-top:14px">💡 '+tr('A <b>scanner gun</b> works anywhere in the app — just scan. If the barcode is new, the "Add item" form opens with the barcode filled in.','<b>اسکینر گن</b> ایپ میں کہیں بھی کام کرتی ہے — بس اسکین کریں۔ نیا بارکوڈ ہو تو "نیا آئٹم" فارم خود کھل جائے گا، بارکوڈ پہلے سے بھرا ہوا۔')+'</div>'+
+    (rec.length ? '<div class="sh"><h3>'+tr('Recent scans','حالیہ اسکین')+'</h3><button data-act="clrrec">'+tr('Clear','صاف کریں')+'</button></div>' + rec.map(i => '<div class="li" data-act="open" data-id="'+i.id+'"><div class="em">'+pic(i)+'</div><div class="tx"><b>'+esc(iName(i))+'</b><small dir="ltr">'+esc(i.barcode)+' • '+money(i.price)+'</small></div><button class="icbtn" data-act="q+" data-id="'+i.id+'">'+ic('plus')+'</button></div>').join('') : '')+
+    '</div>';
+}
+
+function vPrint(){
+  const items = S.queue.map(q => ({q, it:S.items.find(i => i.id === q.id)})).filter(x => x.it);
+  const total = items.reduce((a, x) => a + x.q.qty, 0);
+  return '<div class="top"><div style="flex:1"><h2>'+tr('Print Labels','لیبل پرنٹ')+'</h2><div class="sub">'+total+' '+tr('labels','لیبل')+' • '+items.length+' '+tr('items','آئٹمز')+'</div></div>'+(items.length?'<button class="icbtn r" data-act="qclr">'+ic('trash')+'</button>':'')+'</div><div class="sec">'+
+    (items.length ? items.map(({q, it}) => '<div class="li"><div class="em">'+pic(it)+'</div><div class="tx"><b>'+esc(iName(it))+'</b><small>'+money(it.price)+' • '+labelOf(it).size+' mm</small></div>'+
+      '<div class="qty" dir="ltr"><button data-act="qm" data-id="'+it.id+'">'+ic('minus',16)+'</button><input type="number" min="0" value="'+q.qty+'" data-qty="'+it.id+'"><button data-act="qp" data-id="'+it.id+'">'+ic('plus',16)+'</button></div></div>').join('')
+      : '<div class="empty"><div class="e">🖨️</div><p>'+tr('The print queue is empty. Tap <b>+</b> on items.','پرنٹ لسٹ خالی ہے۔ آئٹمز پر <b>+</b> دبائیں۔')+'</p></div>')+
+    '<div class="panel" style="margin-top:6px"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><h4 style="margin:0">🖨️ '+tr('Printer','پرنٹر')+'</h4><button class="mini" style="padding:8px 12px" data-act="padd">'+ic('plus',14)+tr('Add printer','پرنٹر شامل کریں')+'</button></div>'+
+      S.printers.map(p => printerCard(p, p.id === curPrinter().id)).join('')+
+      '<div class="pact"><button class="mini" data-act="pedit" data-id="'+curPrinter().id+'">'+ic('edit',14)+tr('Printer settings','پرنٹر سیٹنگز')+'</button></div>'+
+      '<div class="tip" style="margin:10px 0 0">'+howTo(curPrinter())+'</div></div>'+
+    (items.length ? '<div class="panel"><h4>'+tr('Preview','پیش منظر')+'</h4><div id="sprev" dir="ltr"></div></div>' : '')+
+    printButtons(items.length)+
+    '<div class="sh"><h3>'+tr('Quick add','جلدی شامل کریں')+'</h3></div><div class="tgl">'+S.categories.map(c => '<button class="tg" data-act="qcat" data-id="'+c.id+'">'+c.emoji+' '+esc(cName(c))+'</button>').join('')+'</div></div>';
+}
+function expandQueue(){
+  const out = [];
+  if (GROUPS_OVERRIDE) { GROUPS_OVERRIDE.forEach(g => { for (let k = 0; k < g.qty; k++) out.push(g.it); }); return out; }
+  S.queue.forEach(q => { const it = S.items.find(i => i.id === q.id); if (it) for (let k = 0; k < q.qty; k++) out.push(it); });
+  return out;
+}
+function layoutA4(list){
+  const PW = 210, PH = 297, M = 8, G = S.print.gap || 2; const pages = [[]]; let x = M, y = M, rh = 0;
+  list.forEach(it => {
+    const [W, H] = labelOf(it).size.split('x').map(Number);
+    if (x + W > PW - M + 0.01) { x = M; y += rh + G; rh = 0; }
+    if (y + H > PH - M + 0.01) { pages.push([]); x = M; y = M; rh = 0; }
+    pages[pages.length - 1].push({it, x, y, W, H}); x += W + G; rh = Math.max(rh, H);
+  });
+  return pages;
+}
+function renderSheetPrev(){
+  const box = $('#sprev'); if (!box) return;
+  const list = expandQueue();
+  if (pmode() === 'roll') { box.innerHTML = '<div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-height:340px;overflow:auto;padding:4px">' + list.slice(0, 40).map(it => labelSVG(it, labelOf(it), 130)).join('') + (list.length > 40 ? '<p style="width:100%;text-align:center;color:var(--mut);font-size:12px">+'+(list.length-40)+'</p>' : '') + '</div>'; return; }
+  const pages = layoutA4(list); const wpx = Math.min(box.clientWidth || 300, 340); const k = wpx / 210;
+  box.innerHTML = pages.map((pg, i) => '<div class="sheetprev" style="width:'+wpx+'px;height:'+(297*k)+'px;margin-bottom:12px">' + pg.map(c => '<div style="position:absolute;left:'+(c.x*k)+'px;top:'+(c.y*k)+'px">'+labelSVG(c.it, labelOf(c.it), c.W*k)+'</div>').join('') + '<span style="position:absolute;right:6px;bottom:4px;font-size:9px;color:#aaa">'+(i+1)+'/'+pages.length+'</span></div>').join('');
+}
+
+function printButtons(n){
+  const p = curPrinter(), dis = n ? '' : 'disabled';
+  if (window.AndroidApp) {
+    return '<button class="btn" data-act="pdirect" '+dis+'>'+ic('print',18)+tr('Print now','ابھی پرنٹ کریں')+'</button>'+
+      '<div class="btns2" style="margin-top:10px"><button class="btn sec2" data-act="pmain" '+dis+'>'+ic('dl',18)+tr('Save ','فائل ')+outName(p.out === 'pdf' || p.out === 'html' ? 'pdf' : p.out)+'</button><button class="btn sec2" data-act="pdf" '+dis+'>'+ic('dl',18)+'PDF</button></div>'+
+      '<p style="font-size:11.5px;color:var(--mut);text-align:center;margin:10px 0">'+tr('Sending to: ','بھیجا جائے گا: ')+'<b>'+esc(p.name)+'</b></p>';
+  }
+  const direct = p.conn === 'bt' && p.out !== 'pdf' && p.out !== 'png' && p.out !== 'html';
+  let h = '<button class="btn" data-act="pmain" '+dis+'>'+ic('print',18)+tr('Print','پرنٹ')+' — '+outName(p.out)+'</button>';
+  h += '<div class="btns2" style="margin-top:10px">'+(direct ? '<button class="btn sec2" data-act="pdirect" '+dis+'>'+btIcon()+tr('Direct print','ڈائریکٹ پرنٹ')+'</button>' : '')+
+    (p.out !== 'pdf' ? '<button class="btn sec2" data-act="pdf" '+dis+'>'+ic('dl',18)+'PDF</button>' : '<button class="btn sec2" data-act="html" '+dis+'>'+ic('dl',18)+tr('Print file','پرنٹ فائل')+'</button>')+'</div>';
+  return h + '<p style="font-size:11.5px;color:var(--mut);text-align:center;margin:10px 0">'+tr('Sending to: ','بھیجا جائے گا: ')+'<b>'+esc(p.name)+'</b></p>';
+}
+function vMore(){
+  const s = S.settings;
+  return '<div class="top"><div style="flex:1"><h2>'+tr('Settings','سیٹنگز')+'</h2><div class="sub">'+tr('Shop info, language, categories, backup','دکان کی معلومات، زبان، کیٹیگریز، بیک اپ')+'</div></div></div><div class="sec">'+
+    '<div class="panel"><h4>🌐 '+tr('Language','زبان')+'</h4><div class="seg"><button data-act="setlang" data-v="ur" class="'+(s.lang==='ur'?'on':'')+'">اردو</button><button data-act="setlang" data-v="en" class="'+(s.lang!=='ur'?'on':'')+'">English</button></div></div>'+
+    '<div class="panel"><h4>🏪 '+tr('Bakery info','بیکری کی معلومات')+'</h4>'+
+    '<div class="phbox" style="margin-bottom:12px"><div class="phprev round">'+(s.logo?'<img src="'+s.logo+'" alt="">':'🥐')+'</div><div style="flex:1"><b>'+tr('Shop logo','دکان کا لوگو')+'</b><small>'+tr('Shown in the app header','ایپ کے اوپر نظر آئے گا')+'</small><div class="phbtns"><button type="button" class="mini" data-act="logo">'+ic('cam',14)+(s.logo?tr('Change','تبدیل'):tr('Upload','لگائیں'))+'</button>'+(s.logo?'<button type="button" class="mini rm" data-act="logorm">'+tr('Remove','ہٹائیں')+'</button>':'')+'</div></div></div>'+
+    '<label class="f"><span>'+tr('Bakery name — English (on label)','بیکری کا نام — انگریزی (لیبل پر)')+'</span><input class="in" dir="ltr" data-set="shop" value="'+esc(s.shop)+'"></label>'+
+    '<label class="f"><span>'+tr('Bakery name — Urdu','بیکری کا نام — اردو')+'</span><input class="in ur-in" dir="rtl" data-set="shopUr" value="'+esc(s.shopUr||'')+'" placeholder="شاہی بیکرز"></label>'+
+    '<div class="row2"><label class="f"><span>'+tr('Tagline','ٹیگ لائن')+'</span><input class="in" dir="ltr" data-set="tagline" value="'+esc(s.tagline)+'"></label><label class="f"><span>'+tr('Tagline — Urdu','ٹیگ لائن — اردو')+'</span><input class="in ur-in" dir="rtl" data-set="taglineUr" value="'+esc(s.taglineUr||'')+'"></label></div>'+
+    '<div class="row2"><label class="f"><span>'+tr('Phone','فون')+'</span><input class="in" dir="ltr" data-set="phone" value="'+esc(s.phone)+'"></label><label class="f"><span>'+tr('Currency','کرنسی')+'</span><input class="in" dir="ltr" data-set="currency" value="'+esc(s.currency)+'"></label></div></div>'+
+    '<div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><h4 style="margin:0">🖨️ '+tr('Printers','پرنٹرز')+'</h4><button class="mini" style="padding:8px 12px" data-act="padd">'+ic('plus',14)+tr('Add','شامل')+'</button></div>'+
+      S.printers.map(p => '<div class="catrow"><div class="e">'+(p.conn==='bt'?btIcon():connOf(p.conn).i)+'</div><div class="nm">'+esc(p.name)+'<small>'+tr(connOf(p.conn).n,connOf(p.conn).u)+' • '+tr(kindOf(p.kind).n,kindOf(p.kind).u)+' • '+outName(p.out)+'</small></div><button class="icbtn" data-act="pedit" data-id="'+p.id+'">'+ic('edit')+'</button></div>').join('')+'</div>'+
+    '<div class="panel"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px"><h4 style="margin:0">🗂️ '+tr('Categories','کیٹیگریز')+'</h4><button class="mini" style="padding:8px 12px" data-act="catadd">'+ic('plus',14)+tr('New','نئی')+'</button></div>'+catRows()+'</div>'+
+    '<div class="panel"><h4>💾 '+tr('Data & backup','ڈیٹا اور بیک اپ')+'</h4><div class="btns2"><button class="btn sec2" data-act="export">'+ic('dl',18)+tr('Backup','بیک اپ')+'</button><button class="btn sec2" data-act="import">'+ic('up',18)+tr('Restore','واپس لائیں')+'</button></div>'+
+    '<button class="btn sec2" style="margin-top:10px" data-act="csv">'+ic('dl',18)+tr('Items list (CSV / Excel)','آئٹمز کی لسٹ (CSV / Excel)')+'</button>'+
+    '<button class="btn danger" style="margin-top:10px" data-act="reset">'+ic('refresh',18)+tr('Reset demo data','ڈیمو ڈیٹا ری سیٹ کریں')+'</button></div>'+
+    '<p style="text-align:center;font-size:11.5px;color:var(--mut)">'+S.items.length+' '+tr('items • changes save automatically','آئٹمز • تبدیلیاں خود محفوظ ہوتی ہیں')+'</p></div>';
+}
+function catRows(){
+  return S.categories.map(c => '<div class="catrow"><div class="e">'+c.emoji+'</div><div class="nm">'+esc(cName(c))+'<small>'+esc(UR() ? c.name : (c.nameUr||''))+' • '+S.items.filter(i => i.cat===c.id).length+' '+tr('items','آئٹمز')+'</small></div><button class="icbtn" data-act="catedit" data-id="'+c.id+'">'+ic('edit')+'</button><button class="icbtn r" data-act="catdel" data-id="'+c.id+'">'+ic('trash')+'</button></div>').join('');
+}
+
+/* ---------- sheets ---------- */
+function openSheet(html){ $('#sheetpn').innerHTML = '<div class="grab"></div>' + html; $('#sheet').classList.add('open'); $('#sheetpn').scrollTop = 0; document.body.style.overflow = 'hidden'; }
+function closeSheet(){ $('#sheet').classList.remove('open'); document.body.style.overflow = ''; editing = null; }
+
+function openItem(id){
+  const it = S.items.find(i => i.id === id); if (!it) return;
+  const L = labelOf(it), c = catOf(it.cat), [m, e] = dates(it), q = qOf(id);
+  const other = UR() ? it.name : (it.nameUr || '');
+  openSheet('<div class="shh"><h3>'+tr('Item details','آئٹم کی تفصیل')+'</h3><button class="x" data-act="close">'+ic('x')+'</button></div>'+
+    (it.photo ? '<div class="bigph"><img src="'+it.photo+'" alt=""></div>' : '')+
+    '<div class="dt-hero">'+(it.photo?'':'<div class="em">'+it.emoji+'</div>')+'<div style="flex:1;min-width:0"><h3>'+esc(iName(it))+'</h3>'+(other?'<div class="alt">'+esc(other)+'</div>':'')+'<div style="font-size:12px;color:var(--mut)">'+c.emoji+' '+esc(cName(c))+' • <span dir="ltr">'+esc(it.weight||'')+'</span></div><div class="p" dir="ltr">'+money(it.price)+'</div></div></div>'+
+    '<div class="kv"><div><small>'+tr('Barcode','بارکوڈ')+' ('+encode(it.barcode).type+')</small><b dir="ltr">'+esc(it.barcode)+'</b></div><div><small>'+tr('Stock','اسٹاک')+'</small><b>'+(it.stock||0)+' '+tr('pcs','عدد')+'</b></div><div><small>'+tr('Batch','بیچ')+'</small><b dir="ltr">'+esc(batchOf(it))+'</b></div><div><small>'+tr('Type','قسم')+'</small><b>'+(it.veg==='veg'?tr('🟢 Veg','🟢 ویج'):it.veg==='nonveg'?tr('🔺 Non-veg','🔺 نان ویج'):'—')+'</b></div><div><small>'+tr('MFG (today)','تیاری (آج)')+'</small><b dir="ltr">'+m+'</b></div><div><small>'+tr('EXP','میعاد ختم')+' ('+it.shelf+' '+tr('days','دن')+')</small><b dir="ltr">'+e+'</b></div></div>'+
+    (it.ingr ? '<div class="panel" style="padding:12px 14px"><small style="color:var(--mut);font-size:11px">'+tr('Ingredients','اجزاء')+'</small><div style="font-size:13px">'+esc(it.ingr)+'</div></div>' : '')+
+    '<div class="panel"><h4>'+tr('Label preview','لیبل کا پیش منظر')+' '+(it.label?'<span style="font-size:11px;color:#e0702b">• '+tr('Custom','الگ')+'</span>':'')+'</h4><div class="prev" dir="ltr">'+labelSVG(it, L, Math.min(320, window.innerWidth - 90))+'</div></div>'+
+    '<div style="display:flex;gap:10px;align-items:center;margin-bottom:12px"><div class="qty" dir="ltr"><button data-act="dq-" >'+ic('minus',16)+'</button><input type="number" id="dq" min="1" value="'+(q||1)+'"><button data-act="dq+">'+ic('plus',16)+'</button></div>'+
+    '<button class="btn" style="flex:1" data-act="dqadd" data-id="'+id+'">'+ic('print',18)+(q?tr('Update queue','تعداد بدلیں'):tr('Add to print','پرنٹ میں ڈالیں'))+'</button></div>'+
+    '<div class="btns2"><button class="btn sec2" data-act="edit" data-id="'+id+'">'+ic('edit',18)+tr('Edit','ترمیم')+'</button><button class="btn sec2" data-act="dup" data-id="'+id+'">'+ic('copy',18)+tr('Duplicate','کاپی بنائیں')+'</button></div>'+
+    '<button class="btn danger" style="margin-top:10px" data-act="del" data-id="'+id+'">'+ic('trash',18)+tr('Delete item','آئٹم ڈیلیٹ کریں')+'</button>');
+}
+
+let editing = null;
+function phBox(){
+  const e = editing;
+  return '<div class="phprev">'+(e.photo?'<img src="'+e.photo+'" alt="">':e.emoji)+'</div><div style="flex:1"><b>'+tr('Product photo','پروڈکٹ کی تصویر')+'</b><small>'+tr('From camera or gallery','کیمرہ یا گیلری سے')+'</small><div class="phbtns"><button type="button" class="mini" data-act="photo">'+ic('cam',14)+(e.photo?tr('Change','تبدیل'):tr('Upload photo','تصویر لگائیں'))+'</button>'+(e.photo?'<button type="button" class="mini rm" data-act="photorm">'+tr('Remove','ہٹائیں')+'</button>':'')+'</div></div>';
+}
+function openEditor(id, preset){
+  const src = id ? S.items.find(i => i.id === id) : null;
+  editing = src ? JSON.parse(JSON.stringify(src)) : Object.assign({id:null, name:'', nameUr:'', cat:(curCat !== 'all' ? curCat : (S.categories[0]||{}).id), price:'', weight:'', shelf:3, emoji:'🧁', photo:'', ingr:'', barcode:newBarcode(), stock:0, label:null}, preset || {});
+  const e = editing;
+  openSheet('<div class="shh"><h3>'+(src?tr('Edit item','آئٹم میں ترمیم'):tr('New item','نیا آئٹم'))+'</h3><button class="x" data-act="close">'+ic('x')+'</button></div>'+
+    '<form id="edform" autocomplete="off">'+
+    '<div class="panel phbox" id="phbox">'+phBox()+'</div>'+
+    '<div class="panel"><div class="prev" id="eprev" dir="ltr" style="min-height:120px"></div></div>'+
+    '<div class="panel"><label class="f"><span>'+tr('Item name — English *','آئٹم کا نام — انگریزی *')+'</span><input class="in" dir="ltr" name="name" required value="'+esc(e.name)+'" placeholder="e.g. Chocolate Cake"></label>'+
+    '<label class="f"><span>'+tr('Item name — Urdu','آئٹم کا نام — اردو')+'</span><input class="in ur-in" dir="rtl" name="nameUr" value="'+esc(e.nameUr||'')+'" placeholder="مثلاً چاکلیٹ کیک"></label>'+
+    '<div class="row2"><label class="f"><span>'+tr('Price','قیمت')+' ('+esc(S.settings.currency)+') *</span><input class="in" dir="ltr" name="price" type="number" step="0.01" min="0" required value="'+esc(e.price)+'"></label>'+
+    '<label class="f"><span>'+tr('Weight / Qty','وزن / تعداد')+'</span><input class="in" dir="ltr" name="weight" value="'+esc(e.weight)+'" placeholder="500 g, 1 pc"></label></div>'+
+    '<label class="f"><span>'+tr('Category','کیٹیگری')+'</span><select class="in" name="cat">'+S.categories.map(c => '<option value="'+c.id+'" '+(c.id===e.cat?'selected':'')+'>'+c.emoji+' '+esc(cName(c))+'</option>').join('')+'</select></label>'+
+    '<label class="f"><span>'+tr('Barcode','بارکوڈ')+'</span><div class="inbtn" dir="ltr"><input class="in" name="barcode" value="'+esc(e.barcode)+'" style="font-family:ui-monospace,Menlo,monospace;letter-spacing:.5px"><button type="button" class="mini" data-act="genbc">'+ic('refresh',14)+tr('New','نیا')+'</button><button type="button" class="mini" data-act="cambc">'+ic('cam',14)+'</button></div></label>'+
+    '<div class="row2"><label class="f"><span>'+tr('Batch no.','بیچ نمبر')+'</span><input class="in" dir="ltr" name="batch" value="'+esc(e.batch||'')+'" placeholder="'+tr('Auto (date)','خودکار (تاریخ)')+'"></label>'+
+    '<label class="f"><span>'+tr('Veg / Non-veg','ویج / نان ویج')+'</span><select class="in" name="veg">'+[['',tr('— None','— کوئی نہیں')],['veg',tr('🟢 Veg','🟢 ویج')],['nonveg',tr('🔺 Non-veg','🔺 نان ویج')]].map(v => '<option value="'+v[0]+'" '+((e.veg||'')===v[0]?'selected':'')+'>'+v[1]+'</option>').join('')+'</select></label></div>'+
+    '<div class="row2"><label class="f"><span>'+tr('Shelf life (days)','شیلف لائف (دن)')+'</span><input class="in" dir="ltr" name="shelf" type="number" min="0" value="'+esc(e.shelf)+'"></label><label class="f"><span>'+tr('Stock','اسٹاک')+'</span><input class="in" dir="ltr" name="stock" type="number" min="0" value="'+esc(e.stock)+'"></label></div>'+
+    '<label class="f"><span>'+tr('Ingredients','اجزاء')+'</span><textarea class="in" name="ingr" placeholder="Flour, sugar, eggs…">'+esc(e.ingr)+'</textarea></label>'+
+    '<div class="f" style="margin:0"><span>'+tr('Icon (when there is no photo)','آئیکن (جب تصویر نہ ہو)')+'</span><div class="emojis">'+EMOJIS.map(x => '<button type="button" data-act="emoji" data-v="'+x+'" class="'+(x===e.emoji?'on':'')+'">'+x+'</button>').join('')+'</div></div></div>'+
+    '<div class="panel"><div class="switch" data-act="custom"><div><b>'+tr('Separate label for this item','اس آئٹم کا الگ لیبل')+'</b><small>'+tr('Own template, size, color and fields','اپنا ٹیمپلیٹ، سائز، رنگ اور فیلڈز')+'</small></div><span class="sw-t '+(e.label?'on':'')+'" id="cust"></span></div><div id="custbox">'+(e.label ? labelCtrls(e.label, 'item') : '')+'</div></div>'+
+    '<button class="btn" type="submit">'+ic('check',18)+(src?tr('Save changes','محفوظ کریں'):tr('Add item','آئٹم شامل کریں'))+'</button>'+
+    (src?'<button type="button" class="btn danger" style="margin-top:10px" data-act="del" data-id="'+src.id+'">'+ic('trash',18)+tr('Delete','ڈیلیٹ')+'</button>':'')+
+    '</form>');
+  edPrev();
+}
+function readEditor(){
+  const f = $('#edform'); if (!f || !editing) return;
+  const d = new FormData(f);
+  ['name','nameUr','weight','cat','barcode','ingr','batch','veg'].forEach(k => editing[k] = String(d.get(k) || '').trim());
+  editing.price = d.get('price') === '' ? '' : +d.get('price');
+  editing.shelf = +d.get('shelf') || 0; editing.stock = +d.get('stock') || 0;
+}
+function edPrev(){
+  readEditor(); const p = $('#eprev'); if (!p) return;
+  const it = Object.assign({}, editing, {name: editing.name || 'Item name', price: editing.price || 0});
+  p.innerHTML = labelSVG(it, editing.label || S.settings.label, Math.min(300, window.innerWidth - 90));
+}
+function saveEditor(){
+  readEditor(); const e = editing;
+  if (!e.name) { toast(tr('Enter the item name (English)','آئٹم کا انگریزی نام لکھیں')); return; }
+  if (e.price === '' || isNaN(e.price)) { toast(tr('Enter the price','قیمت لکھیں')); return; }
+  if (!e.barcode) e.barcode = newBarcode();
+  const dup = S.items.find(i => i.barcode === e.barcode && i.id !== e.id);
+  if (dup) { toast(tr('This barcode already belongs to ','یہ بارکوڈ پہلے سے اس کا ہے: ') + iName(dup)); return; }
+  if (e.id) { const k = S.items.findIndex(i => i.id === e.id); S.items[k] = e; toast(tr('✓ Saved','✓ محفوظ ہو گیا')); }
+  else { e.id = uid(); e.created = Date.now(); S.items.unshift(e); toast('✓ ' + iName(e) + tr(' added',' شامل ہو گیا')); }
+  save(); closeSheet(); render();
+}
+
+/* categories */
+function openCat(id){
+  const c = id ? S.categories.find(x => x.id === id) : {name:'', nameUr:'', emoji:'🍰'};
+  let em = c.emoji;
+  openSheet('<div class="shh"><h3>'+(id?tr('Edit category','کیٹیگری میں ترمیم'):tr('New category','نئی کیٹیگری'))+'</h3><button class="x" data-act="close">'+ic('x')+'</button></div>'+
+    '<form id="catform" class="panel"><label class="f"><span>'+tr('Name — English','نام — انگریزی')+'</span><input class="in" dir="ltr" name="name" required value="'+esc(c.name)+'" placeholder="e.g. Sweets, Drinks"></label>'+
+    '<label class="f"><span>'+tr('Name — Urdu','نام — اردو')+'</span><input class="in ur-in" dir="rtl" name="nameUr" value="'+esc(c.nameUr||'')+'" placeholder="مثلاً مٹھائی"></label>'+
+    '<div class="f"><span>'+tr('Icon','آئیکن')+'</span><div class="emojis" id="catem">'+EMOJIS.map(x => '<button type="button" data-v="'+x+'" class="'+(x===em?'on':'')+'">'+x+'</button>').join('')+'</div></div>'+
+    '<button class="btn" type="submit">'+ic('check',18)+tr('Save','محفوظ کریں')+'</button></form>');
+  $('#catem').onclick = ev => { const b = ev.target.closest('button'); if (!b) return; em = b.dataset.v; $('#catem').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b)); };
+  $('#catform').onsubmit = ev => { ev.preventDefault(); const fd = new FormData(ev.target); const n = String(fd.get('name')).trim(); const nu = String(fd.get('nameUr')||'').trim(); if (!n) return;
+    if (id) Object.assign(c, {name:n, nameUr:nu, emoji:em}); else S.categories.push({id:'c' + uid(), name:n, nameUr:nu, emoji:em});
+    save(); closeSheet(); render(); toast(tr('✓ Category saved','✓ کیٹیگری محفوظ ہو گئی')); };
+}
+function openCatMgr(){
+  openSheet('<div class="shh"><h3>'+tr('Categories','کیٹیگریز')+'</h3><button class="x" data-act="close">'+ic('x')+'</button></div><div class="panel">'+catRows()+
+    '</div><button class="btn" data-act="catadd">'+ic('plus',18)+tr('New category','نئی کیٹیگری')+'</button>');
+}
+
+/* ---------- scanning ---------- */
+function handleScan(code){
+  code = String(code || '').trim(); if (!code) return;
+  const it = S.items.find(i => i.barcode === code) || (/^\d{12}$/.test(code) ? S.items.find(i => i.barcode === '0' + code) : null);
+  if (it) {
+    S.recent = [it.barcode].concat(S.recent.filter(r => r !== it.barcode)).slice(0, 12); save();
+    if (view === 'scan') render();
+    toast(tr('✓ Found: ','✓ مل گیا: ') + iName(it)); openItem(it.id);
+  } else {
+    toast(tr('New barcode — add the item','نیا بارکوڈ — آئٹم شامل کریں')); openEditor(null, {barcode: code});
+  }
+}
+let camTarget = 'scan';
+async function decodeImage(file){
+  const url = URL.createObjectURL(file);
+  const img = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url; });
+  const k = Math.min(1, 1600 / Math.max(img.width, img.height));
+  const cv = document.createElement('canvas'); cv.width = Math.round(img.width * k); cv.height = Math.round(img.height * k);
+  cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+  if ('BarcodeDetector' in window) {
+    try { const r = await new BarcodeDetector().detect(cv); if (r && r[0]) return r[0].rawValue; } catch(e) {}
+  }
+  const srcs = ['https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js', 'https://unpkg.com/@zxing/library@0.20.0/umd/index.min.js'];
+  for (const s of srcs) { if (window.ZXing) break; try { await loadScript(s); } catch(e) {} }
+  if (!window.ZXing) throw new Error('lib');
+  const hints = new Map(); hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
+  const reader = new ZXing.BrowserMultiFormatReader(hints);
+  const res = await reader.decodeFromImageUrl(cv.toDataURL('image/png'));
+  return res.getText();
+}
+$('#camfile').addEventListener('change', async ev => {
+  const f = ev.target.files[0]; ev.target.value = ''; if (!f) return;
+  toast(tr('Reading barcode…','بارکوڈ پڑھ رہا ہوں…'));
+  try {
+    const code = await decodeImage(f);
+    if (camTarget === 'field') { const inp = document.querySelector('#edform [name=barcode]'); if (inp) { inp.value = code; edPrev(); toast('✓ ' + code); } }
+    else handleScan(code);
+  } catch(e) { toast(tr('No barcode found — take a closer, straight photo','بارکوڈ نہیں ملا — قریب سے سیدھی تصویر لیں')); }
+});
+/* hardware scanner (keyboard wedge) anywhere */
+let wb = '', wt = 0;
+document.addEventListener('keydown', ev => {
+  const tg = ev.target; if (tg && /INPUT|TEXTAREA|SELECT/.test(tg.tagName)) return;
+  const now = Date.now(); if (now - wt > 80) wb = ''; wt = now;
+  if (ev.key === 'Enter') { if (wb.length >= 4) { ev.preventDefault(); handleScan(wb); } wb = ''; return; }
+  if (ev.key.length === 1) wb += ev.key;
+});
+
+/* ---------- printing / export ---------- */
+function svgToPng(svg, W, H, px){
+  return new Promise((res, rej) => {
+    const pxmm = px || 12; const img = new Image();
+    img.onload = () => { const c = document.createElement('canvas'); c.width = Math.round(W*pxmm); c.height = Math.round(H*pxmm); const x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0,0,c.width,c.height); x.drawImage(img, 0, 0, c.width, c.height); res(c.toDataURL('image/png')); };
+    img.onerror = rej;
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  });
+}
+async function saveFile(filename, data){
+  if (window.AndroidApp) {
+    try { await nativeCall('saveFile', filename, await toB64(data), mimeOf(filename)); toast(tr('✓ Saved to Downloads: ','✓ ڈاؤن لوڈز میں محفوظ: ') + filename); return true; }
+    catch(e) { toast(tr('Could not save file','فائل محفوظ نہیں ہو سکی')); return false; }
+  }
+  if (!DL) { toast(tr('Downloads are not available in this view','یہاں ڈاؤن لوڈ دستیاب نہیں')); return false; }
+  try { await DL.save({filename, data}); toast('✓ ' + filename); return true; }
+  catch(e) { if (e && e.code === 'declined') toast(tr('Download cancelled','ڈاؤن لوڈ منسوخ')); else toast(tr('Download failed','ڈاؤن لوڈ نہیں ہو سکا') + ' (' + ((e && e.code) || 'error') + ')'); return false; }
+}
+async function makePDF(btn){
+  if (!expandQueue().length) return;
+  const old = btn.innerHTML; btn.innerHTML = '<span class="loading"></span>' + tr('Making…','بن رہی ہے…'); btn.disabled = true;
+  try { await saveFile('bakery-labels-' + fmtD(new Date()) + '.pdf', await buildPDFBlob()); }
+  catch(e) { toast(tr('Could not make the PDF','PDF نہیں بن سکی')); }
+  btn.innerHTML = old; btn.disabled = false;
+}
+function makeHTML(){
+  const list = expandQueue(); if (!list.length) return;
+  let body = '', page = '';
+  if (pmode() === 'roll') {
+    const [W, H] = labelOf(list[0]).size.split('x').map(Number);
+    page = '@page{size:'+W+'mm '+H+'mm;margin:0}';
+    body = list.map(it => { const [w, h] = labelOf(it).size.split('x').map(Number); return '<div style="width:'+w+'mm;height:'+h+'mm;page-break-after:always;overflow:hidden">'+labelSVG(it, labelOf(it), 1, 'l').replace(/width="1" height="[^"]+"/, 'width="'+w+'mm" height="'+h+'mm"')+'</div>'; }).join('');
+  } else {
+    page = '@page{size:A4;margin:0}';
+    body = layoutA4(list).map(pg => '<div style="position:relative;width:210mm;height:297mm;page-break-after:always;overflow:hidden">' + pg.map(c => '<div style="position:absolute;left:'+c.x+'mm;top:'+c.y+'mm">'+labelSVG(c.it, labelOf(c.it), 1, 'l').replace(/width="1" height="[^"]+"/, 'width="'+c.W+'mm" height="'+c.H+'mm"')+'</div>').join('') + '</div>').join('');
+  }
+  const sc = 'scr' + 'ipt';
+  const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Labels — '+esc(S.settings.shop)+'</title><link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@700&display=swap" rel="stylesheet"><style>'+page+'html,body{margin:0;padding:0}svg{display:block}@media screen{body{background:#ddd}body>div{background:#fff;margin:10px auto;box-shadow:0 2px 8px rgba(0,0,0,.2)}}</style></head><body>'+body+'<'+sc+'>window.onload=function(){setTimeout(function(){window.print()},1200)}</'+sc+'></body></html>';
+  saveFile('bakery-labels-' + fmtD(new Date()) + '.html', html);
+}
+function csv(){
+  const rows = [['Name','Urdu name','Category','Price','Weight','Barcode','Shelf life (days)','Stock','Ingredients']].concat(S.items.map(i => [i.name, i.nameUr||'', catOf(i.cat).name, i.price, i.weight, i.barcode, i.shelf, i.stock, i.ingr]));
+  saveFile('bakery-items.csv', '﻿' + rows.map(r => r.map(v => '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"').join(',')).join('\n'));
+}
+$('#impfile').addEventListener('change', async ev => {
+  const f = ev.target.files[0]; ev.target.value = ''; if (!f) return;
+  try { const d = JSON.parse(await f.text()); if (!d || !Array.isArray(d.items) || !Array.isArray(d.categories)) throw 0;
+    if (await confirmBox('📥', tr('Restore backup?','بیک اپ واپس لائیں؟'), d.items.length + tr(' items will load. Current data will be replaced.',' آئٹمز آئیں گے۔ موجودہ ڈیٹا بدل جائے گا۔'), tr('Restore','واپس لائیں'))) { S = Object.assign(seed(), d); save(); render(); toast(tr('✓ Restored','✓ واپس آ گیا')); } }
+  catch(e) { toast(tr('This is not a valid backup file','یہ درست بیک اپ فائل نہیں')); }
+});
+
+let phTarget = 'item';
+$('#photofile').addEventListener('change', async ev => {
+  const f = ev.target.files[0]; ev.target.value = ''; if (!f) return;
+  try {
+    if (phTarget === 'logo') { S.settings.logo = await resizeImg(f, 240, 0.85); save(); render(); toast(tr('✓ Logo added','✓ لوگو لگ گیا')); }
+    else if (editing) { editing.photo = await resizeImg(f, 520, 0.78); $('#phbox').innerHTML = phBox(); toast(tr('✓ Photo added','✓ تصویر لگ گئی')); }
+  } catch(e) { toast(tr('Could not read this image','یہ تصویر نہیں کھل سکی')); }
+});
+
+/* ---------- printers ---------- */
+const CONNS = [{id:'bt', n:'Bluetooth', u:'بلوٹوتھ', i:'ᛒ'}, {id:'wifi', n:'WiFi', u:'وائی فائی', i:'📶'}, {id:'usb', n:'USB', u:'یو ایس بی', i:'🔌'}];
+const KINDS = [{id:'label', n:'Thermal label', u:'تھرمل لیبل'}, {id:'receipt', n:'Thermal receipt', u:'تھرمل رسید'}, {id:'office', n:'A4 office (inkjet/laser)', u:'A4 آفس (انک جیٹ/لیزر)'}];
+const OUTS = {
+  label: [['tspl','TSPL (Xprinter, TSC, Gprinter)'],['zpl','ZPL (Zebra, Godex)'],['pdf','PDF'],['png','PNG images']],
+  receipt: [['escpos','ESC/POS (Epson, Xprinter, Rongta)'],['pdf','PDF'],['png','PNG images']],
+  office: [['pdf','PDF (A4)'],['html','Print file (HTML)']]
+};
+const PRESETS = [
+  {n:'Xprinter', kind:'label', out:'tspl', dpi:203}, {n:'TSC', kind:'label', out:'tspl', dpi:203}, {n:'Zebra', kind:'label', out:'zpl', dpi:203},
+  {n:'Gprinter', kind:'label', out:'tspl', dpi:203}, {n:'Godex', kind:'label', out:'zpl', dpi:203}, {n:'Rongta', kind:'label', out:'tspl', dpi:203},
+  {n:'Receipt 58mm', kind:'receipt', out:'escpos', dpi:203, paperW:58}, {n:'Receipt 80mm', kind:'receipt', out:'escpos', dpi:203, paperW:80},
+  {n:'HP / Canon / Epson', kind:'office', out:'pdf', dpi:600}];
+function seedPrinters(){
+  return [
+    {id:'p1', name:'Bluetooth Label Printer', conn:'bt', kind:'label', out:'tspl', dpi:203, gap:2, density:8},
+    {id:'p2', name:'WiFi Office Printer', conn:'wifi', kind:'office', out:'pdf', dpi:600, gap:2, density:8},
+    {id:'p3', name:'USB Receipt Printer', conn:'usb', kind:'receipt', out:'escpos', dpi:203, paperW:58, gap:0, density:8}];
+}
+const curPrinter = () => (S.printers || []).find(p => p.id === S.print.printer) || (S.printers || [])[0] || {id:'x', name:'Printer', conn:'usb', kind:'office', out:'pdf', dpi:300};
+const pmode = () => curPrinter().kind === 'office' ? 'a4' : 'roll';
+const connOf = id => CONNS.find(c => c.id === id) || CONNS[2];
+const kindOf = id => KINDS.find(k => k.id === id) || KINDS[0];
+const outName = o => ({tspl:'TSPL', zpl:'ZPL', escpos:'ESC/POS', pdf:'PDF', png:'PNG', html:tr('Print file','پرنٹ فائل')})[o] || o;
+
+function printerCard(p, sel){
+  const c = connOf(p.conn);
+  return '<button class="prn '+(sel?'on':'')+'" data-act="psel" data-id="'+p.id+'"><span class="pi">'+(c.id==='bt'?btIcon():c.i)+'</span><span class="pt"><b>'+esc(p.name)+'</b><small>'+tr(c.n,c.u)+' • '+tr(kindOf(p.kind).n,kindOf(p.kind).u)+' • '+outName(p.out)+'</small></span>'+(sel?'<span class="ck">'+ic('check',16)+'</span>':'')+'</button>';
+}
+const btIcon = () => '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7l10 10-5 5V2l5 5L7 17"/></svg>';
+
+function howTo(p){
+  if (window.AndroidApp) {
+    if (p.kind === 'office') return tr('Print now opens Android printing — choose your WiFi or USB printer (Mopria / manufacturer plugin).','"ابھی پرنٹ کریں" اینڈرائیڈ پرنٹنگ کھولے گا — اپنا وائی فائی یا USB پرنٹر چنیں (Mopria / کمپنی پلگ ان)۔');
+    return ({bt: tr('Pair the printer in phone Bluetooth settings first, then pick it below.','پہلے فون کی بلوٹوتھ سیٹنگز میں پرنٹر پیئر کریں، پھر نیچے سے چنیں۔'),
+      wifi: tr('Printer and phone on the same WiFi. Enter the printer IP (print a self-test page to see it). Port is usually 9100.','پرنٹر اور فون ایک ہی وائی فائی پر ہوں۔ پرنٹر کا IP لکھیں (سیلف ٹیسٹ پیج پر ملے گا)۔ پورٹ عموماً 9100۔'),
+      usb: tr('Connect the printer with an OTG cable and allow access when asked.','پرنٹر کو OTG کیبل سے لگائیں اور پوچھنے پر اجازت دیں۔')})[p.conn];
+  }
+  const T = {
+    bt: tr('Download the file, then open it with your printer app or <b>RawBT</b> (Android) — it sends it to the Bluetooth printer. Or try <b>Direct print</b>.',
+           'فائل ڈاؤن لوڈ کریں، پھر پرنٹر کی ایپ یا <b>RawBT</b> (اینڈرائیڈ) سے کھولیں — وہ بلوٹوتھ پرنٹر کو بھیج دے گی۔ یا <b>ڈائریکٹ پرنٹ</b> آزمائیں۔'),
+    wifi: tr('Download the PDF, open it and tap <b>Print</b> — choose your WiFi printer (AirPrint on iPhone, Mopria / Default Print Service on Android). Keep scale at 100%.',
+             'PDF ڈاؤن لوڈ کر کے کھولیں اور <b>Print</b> دبائیں — اپنا وائی فائی پرنٹر چنیں (آئی فون پر AirPrint، اینڈرائیڈ پر Mopria)۔ اسکیل 100٪ رکھیں۔'),
+    usb: tr('On a computer: open the downloaded file and print to the USB printer. For thermal printers set paper size = label size and scale 100%. Raw TSPL/ZPL/ESC-POS files can be sent with the printer utility.',
+            'کمپیوٹر پر ڈاؤن لوڈ فائل کھول کر USB پرنٹر پر پرنٹ کریں۔ تھرمل پرنٹر میں پیپر سائز = لیبل سائز اور اسکیل 100٪ رکھیں۔ TSPL/ZPL/ESC-POS فائل پرنٹر یوٹیلیٹی سے بھیجیں۔')
+  };
+  return T[p.conn] || T.usb;
+}
+
+let BT_LIST = null;
+function btOptions(e){
+  if (!BT_LIST) { try { BT_LIST = JSON.parse(AndroidApp.pairedPrinters()); } catch(x) { BT_LIST = {error:'fail'}; } }
+  if (BT_LIST.error) return '<option value="">'+(BT_LIST.error === 'perm' ? tr('Allow Bluetooth permission, then tap ↻','بلوٹوتھ کی اجازت دیں، پھر ↻ دبائیں') : tr('Bluetooth is off','بلوٹوتھ بند ہے'))+'</option>';
+  if (!BT_LIST.length) return '<option value="">'+tr('No paired devices — pair in phone settings','کوئی پیئرڈ ڈیوائس نہیں — فون سیٹنگز میں پیئر کریں')+'</option>';
+  if (!e.btAddr) e.btAddr = BT_LIST[0].address;
+  return BT_LIST.map(d => '<option value="'+esc(d.address)+'" '+(d.address===e.btAddr?'selected':'')+'>'+esc(d.name || d.address)+'</option>').join('');
+}
+function openPrinter(id){
+  const src = id ? S.printers.find(p => p.id === id) : null;
+  const e = src ? JSON.parse(JSON.stringify(src)) : {id:null, name:'', conn:'bt', kind:'label', out:'tspl', dpi:203, gap:2, density:8, paperW:58};
+  const draw = () => {
+    const outs = OUTS[e.kind];
+    if (!outs.some(o => o[0] === e.out)) e.out = outs[0][0];
+    $('#prnbody').innerHTML =
+      '<label class="f"><span>'+tr('Printer name','پرنٹر کا نام')+'</span><input class="in" id="pn" value="'+esc(e.name)+'" placeholder="e.g. Counter Xprinter"></label>'+
+      '<div class="f"><span>'+tr('Quick setup (brand)','جلدی سیٹ اپ (برانڈ)')+'</span><div class="tgl">'+PRESETS.map((b, i) => '<button type="button" class="tg" data-pp="'+i+'">'+esc(b.n)+'</button>').join('')+'</div></div>'+
+      '<div class="f"><span>'+tr('Connection','کنکشن')+'</span><div class="seg">'+CONNS.map(c => '<button type="button" data-pc="'+c.id+'" class="'+(e.conn===c.id?'on':'')+'">'+(c.id==='bt'?'ᛒ ':c.i+' ')+tr(c.n,c.u)+'</button>').join('')+'</div></div>'+
+      '<div class="f"><span>'+tr('Printer type','پرنٹر کی قسم')+'</span><div class="seg col">'+KINDS.map(k => '<button type="button" data-pk="'+k.id+'" class="'+(e.kind===k.id?'on':'')+'">'+tr(k.n,k.u)+'</button>').join('')+'</div></div>'+
+      '<div class="f"><span>'+tr('Output format','آؤٹ پٹ فارمیٹ')+'</span><div class="tgl">'+outs.map(o => '<button type="button" class="tg '+(e.out===o[0]?'on':'')+'" data-po="'+o[0]+'">'+o[1]+'</button>').join('')+'</div></div>'+
+      (e.kind !== 'office' ? '<div class="row2"><div class="f"><span>DPI</span><div class="seg">'+[203,300].map(d => '<button type="button" data-pd="'+d+'" class="'+(e.dpi===d?'on':'')+'">'+d+'</button>').join('')+'</div></div>'+
+        '<label class="f"><span>'+tr('Darkness','گہرائی')+' ('+e.density+')</span><input type="range" min="1" max="15" value="'+e.density+'" id="pden" style="width:100%;accent-color:#5a9a22"></label></div>' : '')+
+      (e.kind === 'label' ? '<label class="f"><span>'+tr('Gap between labels (mm)','لیبلز کے درمیان فاصلہ (mm)')+'</span><input class="in" type="number" min="0" max="10" step="0.5" id="pgap" value="'+e.gap+'"></label>' : '')+
+      (e.kind !== 'office' ? '<div class="f"><span>'+tr('Print mode','پرنٹ موڈ')+'</span><div class="seg"><button type="button" data-pm="image" class="'+((e.mode||'image')==='image'?'on':'')+'">'+tr('Image (exact, Urdu)','تصویر (ہوبہو، اردو)')+'</button><button type="button" data-pm="text" class="'+(e.mode==='text'?'on':'')+'">'+tr('Text (fast)','ٹیکسٹ (تیز)')+'</button></div></div>' : '')+
+      (window.AndroidApp && e.kind !== 'office' && e.conn === 'bt' ? '<div class="f"><span>'+tr('Bluetooth printer','بلوٹوتھ پرنٹر')+'</span><div class="inbtn"><select class="in" id="pbt">'+btOptions(e)+'</select><button type="button" class="mini" data-pr="1">'+ic('refresh',14)+'</button></div></div>' : '')+
+      (window.AndroidApp && e.kind !== 'office' && e.conn === 'wifi' ? '<div class="row2"><label class="f"><span>'+tr('Printer IP','پرنٹر IP')+'</span><input class="in" dir="ltr" id="pip" inputmode="decimal" placeholder="192.168.1.50" value="'+esc(e.ip||'')+'"></label><label class="f"><span>Port</span><input class="in" dir="ltr" id="pport" type="number" value="'+(e.port||9100)+'"></label></div>' : '')+
+      (e.kind === 'receipt' ? '<div class="f"><span>'+tr('Paper width','کاغذ کی چوڑائی')+'</span><div class="seg">'+[58,80].map(w => '<button type="button" data-pw="'+w+'" class="'+(e.paperW===w?'on':'')+'">'+w+' mm</button>').join('')+'</div></div>' : '')+
+      '<div class="tip" style="margin:4px 0 14px">'+howTo(e)+'</div>'+
+      (window.AndroidApp ? '<button type="button" class="btn sec2" data-pt="1" style="margin-bottom:6px">'+ic('print',18)+tr('Test print','ٹیسٹ پرنٹ')+'</button>' : '');
+  };
+  openSheet('<div class="shh"><h3>'+(src?tr('Edit printer','پرنٹر میں ترمیم'):tr('Add printer','پرنٹر شامل کریں'))+'</h3><button class="x" data-act="close">'+ic('x')+'</button></div>'+
+    '<div class="panel" id="prnbody"></div><button class="btn" id="psave">'+ic('check',18)+tr('Save printer','پرنٹر محفوظ کریں')+'</button>'+
+    (src ? '<button class="btn danger" style="margin-top:10px" id="pdel">'+ic('trash',18)+tr('Delete printer','پرنٹر ڈیلیٹ کریں')+'</button>' : ''));
+  draw();
+  const body = $('#prnbody');
+  body.addEventListener('input', ev => { if (ev.target.id === 'pn') e.name = ev.target.value; if (ev.target.id === 'pden') { e.density = +ev.target.value; ev.target.previousElementSibling.textContent = tr('Darkness','گہرائی') + ' (' + e.density + ')'; } if (ev.target.id === 'pgap') e.gap = +ev.target.value || 0; if (ev.target.id === 'pip') e.ip = ev.target.value.trim(); if (ev.target.id === 'pport') e.port = +ev.target.value || 9100; if (ev.target.id === 'pbt') e.btAddr = ev.target.value; });
+  body.addEventListener('change', ev => { if (ev.target.id === 'pbt') e.btAddr = ev.target.value; });
+  body.addEventListener('click', ev => {
+    const b = ev.target.closest('button'); if (!b) return; const d = b.dataset;
+    if (d.pp !== undefined) { const pr = PRESETS[+d.pp]; Object.assign(e, {kind:pr.kind, out:pr.out, dpi:pr.dpi}); if (pr.paperW) e.paperW = pr.paperW; if (!e.name) e.name = pr.n; }
+    else if (d.pt) { testPrint(b, e); return; } else if (d.pr) { BT_LIST = null; } else if (d.pm) e.mode = d.pm;
+    else if (d.pc) e.conn = d.pc; else if (d.pk) e.kind = d.pk; else if (d.po) e.out = d.po; else if (d.pd) e.dpi = +d.pd; else if (d.pw) e.paperW = +d.pw; else return;
+    draw();
+  });
+  $('#psave').onclick = () => {
+    e.name = (e.name || '').trim() || (tr(connOf(e.conn).n, connOf(e.conn).u) + ' ' + tr('printer','پرنٹر'));
+    if (src) Object.assign(src, e); else { e.id = 'p' + uid(); S.printers.push(e); S.print.printer = e.id; }
+    save(); closeSheet(); render(); toast(tr('✓ Printer saved','✓ پرنٹر محفوظ ہو گیا'));
+  };
+  if (src) $('#pdel').onclick = async () => {
+    if (!(await confirmBox('🖨️', tr('Delete printer?','پرنٹر ڈیلیٹ کریں؟'), src.name, tr('Delete','ڈیلیٹ'), true))) return;
+    S.printers = S.printers.filter(p => p.id !== src.id); if (S.print.printer === src.id) S.print.printer = (S.printers[0] || {}).id; save(); closeSheet(); render();
+  };
+}
+
+/* ---- native printer languages ---- */
+const ascii = t => String(t).normalize('NFKD').replace(/[^\x20-\x7e]/g, '').replace(/"/g, "'");
+function groups(){ if (GROUPS_OVERRIDE) return GROUPS_OVERRIDE; return S.queue.map(q => ({it:S.items.find(i => i.id === q.id), qty:q.qty})).filter(g => g.it && g.qty > 0); }
+function bcData(code){ const e = encode(code); return e.type === 'EAN-13' ? {ean:true, d12:e.text.slice(0, 12), full:e.text} : {ean:false, full:e.text}; }
+
+function buildTSPL(p){
+  const dpi = p.dpi || 203, D = mm => Math.round(mm * dpi / 25.4), big = dpi >= 300 ? 1 : 0;
+  let out = '';
+  groups().forEach(({it, qty}) => {
+    const L = labelOf(it), f = L.fields, [W, H] = L.size.split('x').map(Number), X = D(W), Y = D(H), m = D(1.5);
+    const fh = ['', 12, 20, 24, 32, 48], fw = ['', 8, 12, 16, 24, 32];
+    const F = n => Math.min(5, n + big), cw = n => fw[F(n)], ch = n => fh[F(n)];
+    const fit = (t, n) => { const k = Math.floor((X - 2*m) / cw(n)); t = ascii(t); return t.length > k ? t.slice(0, k - 1) : t; };
+    let y = m; const c = [];
+    c.push('SIZE ' + W + ' mm,' + H + ' mm', 'GAP ' + (p.gap ?? 2) + ' mm,0 mm', 'DIRECTION 1', 'REFERENCE 0,0', 'DENSITY ' + (p.density || 8), 'SPEED 4', 'CODEPAGE 1252', 'CLS');
+    const tag = (f.halal ? 'HALAL ' : '') + (f.veg && it.veg ? (it.veg === 'veg' ? 'VEG' : 'NON-VEG') : '');
+    if (tag.trim()) c.push('TEXT ' + (X - m - tag.trim().length * cw(1)) + ',' + m + ',"' + F(1) + '",0,1,1,"' + tag.trim() + '"');
+    if (f.shop) { c.push('TEXT ' + m + ',' + y + ',"' + F(2) + '",0,1,1,"' + fit(S.settings.shop.toUpperCase() + (f.phone && S.settings.phone ? ' ' + S.settings.phone : ''), 2) + '"'); y += ch(2) + 4; }
+    if (f.name) { c.push('TEXT ' + m + ',' + y + ',"' + F(3) + '",0,1,1,"' + fit(it.name, 3) + '"'); y += ch(3) + 4; }
+    { const mt = [f.weight && it.weight ? it.weight : '', f.cat ? catOf(it.cat).name : '', f.batch ? 'Batch ' + batchOf(it) : ''].filter(Boolean).join('  '); if (mt) { c.push('TEXT ' + m + ',' + y + ',"' + F(1) + '",0,1,1,"' + fit(mt, 1) + '"'); y += ch(1) + 4; } }
+    if (f.mfg || f.exp) { const [md, ed] = dates(it); if (f.mfg) c.push('TEXT ' + m + ',' + y + ',"' + F(1) + '",0,1,1,"MFG ' + md + '"'); if (f.exp) c.push('TEXT ' + (f.mfg ? Math.round(X/2) + D(1) : m) + ',' + y + ',"' + F(1) + '",0,1,1,"EXP ' + ed + '"'); y += ch(1) + 6; }
+    const ps = ascii(money(it.price)), pw = ps.length * cw(4);
+    const bh = Y - y - m - ch(1) - 6;
+    if (f.barcode && it.barcode && bh > 20) {
+      const b = bcData(it.barcode);
+      c.push('BARCODE ' + m + ',' + y + ',"' + (b.ean ? 'EAN13' : '128') + '",' + bh + ',1,0,2,2,"' + (b.ean ? b.d12 : ascii(b.full)) + '"');
+      if (f.price) c.push('TEXT ' + Math.max(m, X - m - pw) + ',' + (y + Math.round(bh/2) - Math.round(ch(4)/2)) + ',"' + F(4) + '",0,1,1,"' + ps + '"');
+    } else if (f.price) c.push('TEXT ' + m + ',' + y + ',"' + F(4) + '",0,1,1,"' + ps + '"');
+    c.push('PRINT 1,' + qty);
+    out += c.join('\r\n') + '\r\n';
+  });
+  return out;
+}
+function buildZPL(p){
+  const dpi = p.dpi || 203, D = mm => Math.round(mm * dpi / 25.4);
+  let out = '';
+  groups().forEach(({it, qty}) => {
+    const L = labelOf(it), f = L.fields, [W, H] = L.size.split('x').map(Number), X = D(W), Y = D(H), m = D(1.5);
+    const h1 = D(H * 0.075), h2 = D(H * 0.12), h3 = D(H * 0.065), hp = D(H * 0.15);
+    let y = m; const c = ['^XA', '^CI28', '^PW' + X, '^LL' + Y, '^MD' + Math.round(((p.density || 8) - 8) * 2), '^PQ' + qty];
+    const T = (x, yy, h, t, w, al) => '^FO' + x + ',' + yy + (w ? '^FB' + w + ',1,0,' + (al || 'L') : '') + '^A0N,' + h + ',' + h + '^FD' + ascii(t).replace(/[\^~]/g, '') + '^FS';
+    const tag = ((f.halal ? 'HALAL ' : '') + (f.veg && it.veg ? (it.veg === 'veg' ? 'VEG' : 'NON-VEG') : '')).trim();
+    if (tag) c.push(T(m, m, h3, tag, X - 2*m, 'R'));
+    if (f.shop) { c.push(T(m, y, h1, S.settings.shop.toUpperCase() + (f.phone && S.settings.phone ? '  ' + S.settings.phone : ''), X - 2*m, 'C')); y += h1 + 4; }
+    if (f.name) { c.push(T(m, y, h2, it.name, X - 2*m, 'C')); y += h2 + 4; }
+    { const mt = [f.weight && it.weight ? it.weight : '', f.batch ? 'Batch ' + batchOf(it) : ''].filter(Boolean).join('   '); if (mt) { c.push(T(m, y, h3, mt, X - 2*m, 'C')); y += h3 + 4; } }
+    if (f.mfg || f.exp) { const [md, ed] = dates(it); if (f.mfg) c.push(T(m, y, h3, 'MFG ' + md, Math.round(X/2) - m - D(1), 'R')); if (f.exp) c.push(T(Math.round(X/2) + D(1), y, h3, 'EXP ' + ed, Math.round(X/2) - m, 'L')); y += h3 + 6; }
+    const bh = Y - y - m - h3 - 6;
+    if (f.barcode && it.barcode && bh > 20) {
+      const b = bcData(it.barcode);
+      c.push('^BY2,2,' + bh, '^FO' + m + ',' + y + (b.ean ? '^BEN,' + bh + ',Y,N^FD' + b.d12 : '^BCN,' + bh + ',Y,N,N^FD' + ascii(b.full)) + '^FS');
+      if (f.price) c.push(T(Math.round(X * 0.55), y + Math.round(bh/2) - Math.round(hp/2), hp, money(it.price), Math.round(X * 0.45) - m, 'R'));
+    } else if (f.price) c.push(T(m, y, hp, money(it.price), X - 2*m, 'C'));
+    c.push('^XZ');
+    out += c.join('\n') + '\n';
+  });
+  return out;
+}
+function buildESCPOS(p){
+  const B = []; const push = (...a) => a.forEach(x => typeof x === 'string' ? B.push(...Array.from(ascii(x)).map(ch => ch.charCodeAt(0))) : B.push(x));
+  const cols = (p.paperW || 58) >= 80 ? 48 : 32;
+  groups().forEach(({it, qty}) => {
+    const f = labelOf(it).fields, [md, ed] = dates(it);
+    for (let k = 0; k < qty; k++) {
+      push(0x1b, 0x40, 0x1b, 0x61, 1);
+      if (f.shop) push(0x1b, 0x45, 1, S.settings.shop.toUpperCase(), 0x0a, 0x1b, 0x45, 0);
+      if (f.phone && S.settings.phone) push('Ph: ' + S.settings.phone, 0x0a);
+      { const tg = ((f.halal ? 'HALAL  ' : '') + (f.veg && it.veg ? (it.veg === 'veg' ? 'VEG' : 'NON-VEG') : '')).trim(); if (tg) push('[ ' + tg + ' ]', 0x0a); }
+      if (f.name) push(0x1d, 0x21, 0x11, it.name.slice(0, cols / 2), 0x0a, 0x1d, 0x21, 0);
+      if (f.weight && it.weight) push(it.weight, 0x0a);
+      if (f.batch) push('Batch ' + batchOf(it), 0x0a);
+      if (f.mfg || f.exp) { let line = (f.mfg ? 'MFG ' + md : '') + (f.mfg && f.exp ? '    ' : '') + (f.exp ? 'EXP ' + ed : ''); push(line, 0x0a); }
+      if (f.price) push(0x1d, 0x21, 0x11, money(it.price), 0x0a, 0x1d, 0x21, 0);
+      if (f.barcode && it.barcode) {
+        const b = bcData(it.barcode);
+        push(0x1d, 0x68, 70, 0x1d, 0x77, 2, 0x1d, 0x48, 2);
+        if (b.ean) push(0x1d, 0x6b, 67, 12, b.d12);
+        else { const d = '{B' + ascii(b.full); push(0x1d, 0x6b, 73, d.length, d); }
+        push(0x0a);
+      }
+      push(0x0a, 0x0a, 0x0a, 0x1d, 0x56, 66, 0);
+    }
+  });
+  return new Uint8Array(B);
+}
+
+/* ---- direct bluetooth (best effort) ---- */
+const BT_SERVICES = ['000018f0-0000-1000-8000-00805f9b34fb', 'e7810a71-73ae-499d-8c15-faa9aef0c3f2', '49535343-fe7d-4ae5-8fa9-9fafd205e455', '0000ff00-0000-1000-8000-00805f9b34fb', '0000fee7-0000-1000-8000-00805f9b34fb'];
+let btChar = null;
+async function btPrint(bytes){
+  if (!navigator.bluetooth) throw {code:'nobt'};
+  if (!btChar) {
+    const dev = await navigator.bluetooth.requestDevice({acceptAllDevices:true, optionalServices:BT_SERVICES});
+    const gatt = await dev.gatt.connect();
+    for (const u of BT_SERVICES) {
+      try { const sv = await gatt.getPrimaryService(u); const cs = await sv.getCharacteristics(); btChar = cs.find(c => c.properties.writeWithoutResponse || c.properties.write); if (btChar) break; } catch(e) {}
+    }
+    if (!btChar) throw {code:'nochar'};
+    dev.addEventListener('gattserverdisconnected', () => { btChar = null; });
+  }
+  for (let i = 0; i < bytes.length; i += 180) {
+    const part = bytes.slice(i, i + 180);
+    if (btChar.properties.writeWithoutResponse) await btChar.writeValueWithoutResponse(part); else await btChar.writeValue(part);
+    await new Promise(r => setTimeout(r, 20));
+  }
+}
+function showDirectHelp(){
+  $('#dlgbx').innerHTML = '<div class="ic">📵</div><h4>'+tr('Direct Bluetooth is blocked here','یہاں ڈائریکٹ بلوٹوتھ بند ہے')+'</h4><p>'+tr('This view does not allow Bluetooth. Download the printer file instead and open it in your printer app or RawBT — it prints the same way.','یہ ویو بلوٹوتھ کی اجازت نہیں دیتا۔ پرنٹر فائل ڈاؤن لوڈ کر کے پرنٹر ایپ یا RawBT میں کھولیں — پرنٹ ویسے ہی ہوگا۔')+'</p><button class="btn" id="dok">OK</button>';
+  $('#dlg').classList.add('open'); $('#dok').onclick = () => $('#dlg').classList.remove('open');
+}
+
+async function makePNGs(btn){
+  const p = curPrinter(), list = groups(); if (!list.length) return;
+  const old = btn.innerHTML; btn.innerHTML = '<span class="loading"></span>'; btn.disabled = true;
+  try {
+    const dpi = p.dpi || 203, pxmm = dpi / 25.4, files = [];
+    for (const {it, qty} of list) {
+      const L = labelOf(it), [W, H] = L.size.split('x').map(Number);
+      const url = await svgToPng(labelSVG(it, L, W * pxmm), W, H, pxmm);
+      files.push({name: ascii(it.name).replace(/[^\w-]+/g, '_') + '_x' + qty + '.png', url});
+    }
+    if (files.length === 1) { await saveFile(files[0].name, dataToBlob(files[0].url)); }
+    else {
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js');
+      const z = new JSZip(); files.forEach(f => z.file(f.name, f.url.split(',')[1], {base64:true}));
+      await saveFile('bakery-labels-' + fmtD(new Date()) + '.zip', await z.generateAsync({type:'blob'}));
+    }
+  } catch(e) { toast(tr('Could not make images','تصاویر نہیں بن سکیں')); }
+  btn.innerHTML = old; btn.disabled = false;
+}
+async function printMain(btn){
+  const p = curPrinter(); if (!expandQueue().length) return;
+  const d = fmtD(new Date());
+  if (p.out === 'pdf') return makePDF(btn);
+  if (p.out === 'html') return makeHTML();
+  if (p.out === 'png') return makePNGs(btn);
+  const bytes = await printerBytes(p);
+  return saveFile('labels-' + p.out + '-' + d + '.txt', bytes);
+}
+
+function dataToBlob(u){ const b = atob(u.split(',')[1]); const a = new Uint8Array(b.length); for (let i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return new Blob([a], {type:'image/png'}); }
+/* ---------- android app bridge ---------- */
+const NATIVE = window.AndroidApp || null;
+let GROUPS_OVERRIDE = null;
+function b64FromBytes(u8){ let s = ''; for (let i = 0; i < u8.length; i += 0x8000) s += String.fromCharCode.apply(null, u8.subarray(i, i + 0x8000)); return btoa(s); }
+async function toB64(data){
+  if (data instanceof Blob) return b64FromBytes(new Uint8Array(await data.arrayBuffer()));
+  if (typeof data === 'string') return b64FromBytes(new TextEncoder().encode(data));
+  return b64FromBytes(data instanceof Uint8Array ? data : new Uint8Array(data));
+}
+const mimeOf = n => ({pdf:'application/pdf', png:'image/png', zip:'application/zip', json:'application/json', csv:'text/csv', html:'text/html', txt:'text/plain'})[n.split('.').pop().toLowerCase()] || 'application/octet-stream';
+const NCB = {};
+window.onNativeResult = (id, ok, msg) => { const f = NCB[id]; delete NCB[id]; if (f) f(ok, msg); };
+function nativeCall(fn, ...args){ return new Promise((res, rej) => { const id = 'c' + uid(); NCB[id] = (ok, msg) => ok ? res(msg) : rej(new Error(msg || 'failed')); try { NATIVE[fn](...args, id); } catch(e) { delete NCB[id]; rej(e); } }); }
+window.onNativeScan = code => {
+  if (!code) return;
+  if (camTarget === 'field') { const inp = document.querySelector('#edform [name=barcode]'); if (inp) { inp.value = code; edPrev(); toast('✓ ' + code); } }
+  else handleScan(code);
+};
+window.appBack = () => {
+  if ($('#dlg').classList.contains('open')) { $('#dlg').classList.remove('open'); return true; }
+  if ($('#sheet').classList.contains('open')) { closeSheet(); return true; }
+  if (view !== 'home') { go('home'); return true; }
+  return false;
+};
+if (NATIVE) {
+  document.documentElement.classList.add('native');
+  const st = document.createElement('style');
+  st.textContent = "@font-face{font-family:'Noto Nastaliq Urdu';src:url(lib/NotoNastaliqUrdu.ttf)}@font-face{font-family:Poppins;src:url(lib/Poppins-Regular.ttf);font-weight:400}@font-face{font-family:Poppins;src:url(lib/Poppins-Medium.ttf);font-weight:500}@font-face{font-family:Poppins;src:url(lib/Poppins-SemiBold.ttf);font-weight:600}@font-face{font-family:Poppins;src:url(lib/Poppins-Bold.ttf);font-weight:700}@font-face{font-family:Poppins;src:url(lib/Poppins-ExtraBold.ttf);font-weight:800}";
+  document.head.appendChild(st);
+}
+async function buildPDFBlob(){
+  const list = expandQueue(); if (!list.length) throw new Error('empty');
+  await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+  const { jsPDF } = window.jspdf; const cache = {};
+  const png = async it => { if (!cache[it.id]) { const L = labelOf(it); const [W, H] = L.size.split('x').map(Number); cache[it.id] = await svgToPng(labelSVG(it, L, W*12), W, H); } return cache[it.id]; };
+  let doc; const pr = curPrinter();
+  if (pmode() === 'roll') {
+    for (let k = 0; k < list.length; k++) {
+      const it = list[k]; const [W, H] = labelOf(it).size.split('x').map(Number);
+      let PW = W, PH = H, x = 0, y = 0, w = W, h = H;
+      if (pr.kind === 'receipt') { PW = pr.paperW || 58; w = Math.min(W, PW - 4); h = H * w / W; x = (PW - w) / 2; y = 2; PH = h + 4; }
+      const o = PW > PH ? 'landscape' : 'portrait';
+      if (!doc) doc = new jsPDF({unit:'mm', format:[PW, PH], orientation:o}); else doc.addPage([PW, PH], o);
+      doc.addImage(await png(it), 'PNG', x, y, w, h);
+    }
+  } else {
+    doc = new jsPDF({unit:'mm', format:'a4'});
+    const pages = layoutA4(list);
+    for (let p = 0; p < pages.length; p++) { if (p) doc.addPage(); for (const c of pages[p]) doc.addImage(await png(c.it), 'PNG', c.x, c.y, c.W, c.H); }
+  }
+  return doc.output('blob');
+}
+/* raster (image mode): exact label incl. Urdu, logo, badges */
+function loadImgEl(src){ return new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = src; }); }
+async function labelMono(it, L, dpi, maxDots){
+  const [W, H] = L.size.split('x').map(Number);
+  let pxmm = dpi / 25.4; if (maxDots && W * pxmm > maxDots) pxmm = maxDots / W;
+  const url = await svgToPng(labelSVG(it, L, W * pxmm), W, H, pxmm);
+  const img = await loadImgEl(url); const w = img.width, h = img.height;
+  const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); x.drawImage(img, 0, 0);
+  const d = x.getImageData(0, 0, w, h).data; const wb = Math.ceil(w / 8); const bits = new Uint8Array(wb * h);
+  for (let yy = 0; yy < h; yy++) for (let xx = 0; xx < w; xx++) { const i = (yy * w + xx) * 4; const lum = d[i]*0.3 + d[i+1]*0.59 + d[i+2]*0.11; if (lum < 150) bits[yy * wb + (xx >> 3)] |= (0x80 >> (xx & 7)); }
+  return {w, h, wb, bits};
+}
+const enc8 = s => new TextEncoder().encode(s);
+function cat8(parts){ let n = 0; parts.forEach(p => n += p.length); const o = new Uint8Array(n); let k = 0; parts.forEach(p => { o.set(p, k); k += p.length; }); return o; }
+async function rasterBytes(p){
+  const dpi = p.dpi || 203, parts = [];
+  for (const {it, qty} of groups()) {
+    const L = labelOf(it), [W, H] = L.size.split('x').map(Number);
+    if (p.kind === 'receipt' || p.out === 'escpos') {
+      const m = await labelMono(it, L, dpi, (p.paperW || 58) >= 80 ? 576 : 384);
+      for (let k = 0; k < qty; k++) parts.push(new Uint8Array([0x1b, 0x40, 0x1b, 0x61, 1, 0x1d, 0x76, 0x30, 0, m.wb & 255, m.wb >> 8, m.h & 255, m.h >> 8]), m.bits, new Uint8Array([0x0a, 0x0a, 0x0a, 0x1d, 0x56, 66, 0]));
+    } else if (p.out === 'zpl') {
+      const m = await labelMono(it, L, dpi); let hex = ''; for (const b of m.bits) hex += (b < 16 ? '0' : '') + b.toString(16).toUpperCase();
+      parts.push(enc8('^XA^PW' + m.w + '^LL' + m.h + '^MD' + Math.round(((p.density || 8) - 8) * 2) + '^FO0,0^GFA,' + m.bits.length + ',' + m.bits.length + ',' + m.wb + ',' + hex + '^FS^PQ' + qty + '^XZ\n'));
+    } else {
+      const m = await labelMono(it, L, dpi); const inv = m.bits.map(b => 255 - b);
+      parts.push(enc8('SIZE ' + W + ' mm,' + H + ' mm\r\nGAP ' + (p.gap ?? 2) + ' mm,0 mm\r\nDIRECTION 1\r\nREFERENCE 0,0\r\nDENSITY ' + (p.density || 8) + '\r\nSPEED 4\r\nCLS\r\nBITMAP 0,0,' + m.wb + ',' + m.h + ',0,'), inv, enc8('\r\nPRINT 1,' + qty + '\r\n'));
+    }
+  }
+  return cat8(parts);
+}
+async function printerBytes(p){
+  if ((p.mode || 'image') === 'image') return rasterBytes(p);
+  if (p.out === 'escpos' || p.kind === 'receipt') return buildESCPOS(p);
+  return enc8(p.out === 'zpl' ? buildZPL(p) : buildTSPL(p));
+}
+async function sendToPrinter(p){
+  if (p.kind === 'office' || p.out === 'pdf' || p.out === 'html' || p.out === 'png') {
+    const blob = await buildPDFBlob();
+    if (NATIVE) return nativeCall('printPdf', 'Bakery labels', await toB64(blob));
+    return saveFile('bakery-labels-' + fmtD(new Date()) + '.pdf', blob);
+  }
+  const bytes = await printerBytes(p);
+  if (!NATIVE) return btPrint(bytes);
+  const b64 = b64FromBytes(bytes);
+  if (p.conn === 'bt') { if (!p.btAddr) throw new Error(tr('Choose the Bluetooth printer in printer settings','پرنٹر سیٹنگز میں بلوٹوتھ پرنٹر چنیں')); return nativeCall('btPrint', p.btAddr, b64); }
+  if (p.conn === 'wifi') { if (!p.ip) throw new Error(tr('Enter the printer IP address in printer settings','پرنٹر سیٹنگز میں IP ایڈریس لکھیں')); return nativeCall('tcpPrint', p.ip, String(p.port || 9100), b64); }
+  return nativeCall('usbPrint', b64);
+}
+async function directPrint(btn, printer){
+  const p = printer || curPrinter(); if (!printer && !expandQueue().length) return;
+  const old = btn.innerHTML; btn.innerHTML = '<span class="loading" style="border-color:rgba(0,0,0,.15);border-top-color:#356812"></span>'; btn.disabled = true;
+  try { await sendToPrinter(p); toast(tr('✓ Sent to printer','✓ پرنٹر کو بھیج دیا')); }
+  catch(e) {
+    if (NATIVE) toast('⚠️ ' + (e && e.message || 'Print failed'));
+    else { const n = (e && (e.code || e.name)) || ''; if (n === 'NotFoundError') toast(tr('No printer selected','کوئی پرنٹر نہیں چنا')); else showDirectHelp(); }
+  }
+  btn.innerHTML = old; btn.disabled = false;
+}
+async function testPrint(btn, p){
+  const it = S.items[0]; if (!it) return;
+  GROUPS_OVERRIDE = [{it, qty:1}];
+  try { await directPrint(btn, p); } finally { GROUPS_OVERRIDE = null; }
+}
+/* ---------- queue ---------- */
+function qAdd(id, n, set){
+  let q = S.queue.find(x => x.id === id);
+  if (!q) { q = {id, qty:0}; S.queue.push(q); }
+  q.qty = set ? n : q.qty + n;
+  if (q.qty <= 0) S.queue = S.queue.filter(x => x.id !== id);
+  save();
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click', async ev => {
+  const lc = ev.target.closest('[data-lc]');
+  if (lc && lc.tagName === 'BUTTON') {
+    const scope = lc.closest('.lc').dataset.scope;
+    const L = scope === 'default' ? S.settings.label : editing.label;
+    applyLC(L, lc);
+    const box = lc.closest('.lc'); box.outerHTML = labelCtrls(L, scope);
+    if (scope === 'default') { save(); updLPrev(); } else edPrev();
+    return;
+  }
+  const a = ev.target.closest('[data-act]'); if (!a) return;
+  const act = a.dataset.act, id = a.dataset.id;
+  switch (act) {
+    case 'go': closeSheet(); go(a.dataset.v); break;
+    case 'close': closeSheet(); break;
+    case 'cat': curCat = id; qStr = ''; render(); setTimeout(() => { const g = $('#grid'); if (g) g.scrollIntoView({behavior:'smooth', block:'start'}); }, 30); break;
+    case 'open': if (ev.target.closest('[data-act="q+"]')) return; openItem(id); break;
+    case 'q+': ev.stopPropagation(); qAdd(id, 1); renderNav(); if (view === 'home') { renderGrid(); renderStats(); } toast('🖨️ ' + tr('Print queue: ','پرنٹ لسٹ: ') + qOf(id) + ' × ' + iName(S.items.find(i => i.id === id))); break;
+    case 'qall': { const q = qStr.trim().toLowerCase(); S.items.filter(i => (curCat==='all'||i.cat===curCat) && (!q || i.name.toLowerCase().includes(q))).forEach(i => { if (!qOf(i.id)) qAdd(i.id, 1); }); renderNav(); renderGrid(); toast(tr('✓ Added to print queue','✓ پرنٹ لسٹ میں شامل')); break; }
+    case 'qcat': S.items.filter(i => i.cat === id).forEach(i => { if (!qOf(i.id)) qAdd(i.id, 1); }); render(); toast('✓ ' + cName(catOf(id)) + tr(' added',' شامل')); break;
+    case 'qm': qAdd(id, -1); render(); break;
+    case 'qp': qAdd(id, 1); render(); break;
+    case 'qclr': if (await confirmBox('🧹', tr('Clear the queue?','پرنٹ لسٹ صاف کریں؟'), tr('All labels will be removed from the queue.','تمام لیبل لسٹ سے ہٹ جائیں گے۔'), tr('Clear','صاف کریں'), true)) { S.queue = []; save(); render(); } break;
+    case 'psel': S.print.printer = id; save(); render(); break;
+    case 'padd': closeSheet(); openPrinter(null); break;
+    case 'pedit': closeSheet(); openPrinter(id); break;
+    case 'pmain': printMain(a); break;
+    case 'pdirect': directPrint(a); break;
+    case 'pdf': makePDF(a); break;
+    case 'html': makeHTML(); break;
+    case 'add': openEditor(null); break;
+    case 'edit': openEditor(id); break;
+    case 'dup': { const s = S.items.find(i => i.id === id); closeSheet(); openEditor(null, Object.assign(JSON.parse(JSON.stringify(s)), {id:null, name:s.name + ' (copy)', nameUr:s.nameUr ? s.nameUr + ' (کاپی)' : '', barcode:newBarcode()})); break; }
+    case 'del': { const it = S.items.find(i => i.id === id);
+      if (await confirmBox('🗑️', tr('Delete ','ڈیلیٹ کریں: ') + '"' + iName(it) + '"?', tr('This item and its label will be deleted permanently.','یہ آئٹم اور اس کا لیبل ہمیشہ کے لیے ڈیلیٹ ہو جائے گا۔'), tr('Delete','ڈیلیٹ'), true)) {
+        S.items = S.items.filter(i => i.id !== id); S.queue = S.queue.filter(q => q.id !== id); save(); closeSheet(); render(); toast(tr('Deleted','ڈیلیٹ ہو گیا')); }
+      break; }
+    case 'emoji': editing.emoji = a.dataset.v; a.parentNode.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === a)); edPrev(); break;
+    case 'genbc': { const i = document.querySelector('#edform [name=barcode]'); i.value = newBarcode(); edPrev(); break; }
+    case 'cambc': camTarget = 'field'; if (window.AndroidApp) AndroidApp.scan(); else $('#camfile').click(); break;
+    case 'cam': camTarget = 'scan'; if (window.AndroidApp) AndroidApp.scan(); else $('#camfile').click(); break;
+    case 'custom': readEditor(); editing.label = editing.label ? null : JSON.parse(JSON.stringify(S.settings.label)); $('#cust').classList.toggle('on', !!editing.label); $('#custbox').innerHTML = editing.label ? labelCtrls(editing.label, 'item') : ''; edPrev(); break;
+    case 'dq-': { const i = $('#dq'); i.value = Math.max(1, (+i.value || 1) - 1); break; }
+    case 'dq+': { const i = $('#dq'); i.value = (+i.value || 0) + 1; break; }
+    case 'dqadd': qAdd(id, Math.max(1, +$('#dq').value || 1), true); closeSheet(); render(); toast(tr('🖨️ Added to print queue','🖨️ پرنٹ لسٹ میں شامل')); break;
+    case 'catadd': openCat(null); break;
+    case 'catedit': openCat(id); break;
+    case 'catmgr': openCatMgr(); break;
+    case 'catdel': { const c = catOf(id); const n = S.items.filter(i => i.cat === id).length;
+      if (await confirmBox('🗂️', tr('Delete ','ڈیلیٹ کریں: ') + '"' + cName(c) + '"?', n ? n + tr(' items will also be deleted.',' آئٹمز بھی ڈیلیٹ ہوں گے۔') : tr('The category will be deleted.','کیٹیگری ڈیلیٹ ہو جائے گی۔'), tr('Delete','ڈیلیٹ'), true)) {
+        S.categories = S.categories.filter(x => x.id !== id); const gone = S.items.filter(i => i.cat === id).map(i => i.id);
+        S.items = S.items.filter(i => i.cat !== id); S.queue = S.queue.filter(q => !gone.includes(q.id)); if (curCat === id) curCat = 'all'; save(); closeSheet(); render(); }
+      break; }
+    case 'lang': S.settings.lang = UR() ? 'en' : 'ur'; save(); render(); break;
+    case 'setlang': S.settings.lang = a.dataset.v; save(); render(); break;
+    case 'photo': phTarget = 'item'; $('#photofile').click(); break;
+    case 'photorm': editing.photo = ''; $('#phbox').innerHTML = phBox(); break;
+    case 'logo': phTarget = 'logo'; $('#photofile').click(); break;
+    case 'logorm': S.settings.logo = ''; save(); render(); break;
+    case 'lreset': S.settings.label = DEF_LABEL(); save(); render(); toast(tr('Default design restored','ڈیفالٹ ڈیزائن واپس آ گیا')); break;
+    case 'clrrec': S.recent = []; save(); render(); break;
+    case 'export': saveFile('bakery-backup-' + fmtD(new Date()) + '.json', JSON.stringify(S, null, 1)); break;
+    case 'import': $('#impfile').click(); break;
+    case 'csv': csv(); break;
+    case 'reset': if (await confirmBox('⚠️', tr('Reset demo data?','ڈیمو ڈیٹا ری سیٹ کریں؟'), tr('All your items and categories will be replaced by demo data.','آپ کے تمام آئٹمز اور کیٹیگریز کی جگہ ڈیمو ڈیٹا آ جائے گا۔'), tr('Reset','ری سیٹ'), true)) { S = seed(); save(); curCat = 'all'; render(); toast(tr('Reset done','ری سیٹ ہو گیا')); } break;
+  }
+});
+function renderStats(){ const st = document.querySelectorAll('.stat b'); if (st[2]) st[2].textContent = S.queue.reduce((a, q) => a + q.qty, 0); }
+function updLPrev(){ const p = $('#lprev'); if (!p) return; const it = S.items.find(i => i.id === lblSample) || S.items[0]; if (it) p.innerHTML = labelSVG(it, S.settings.label, Math.min(330, window.innerWidth - 80)); }
+document.addEventListener('input', ev => {
+  const t = ev.target;
+  if (t.id === 'q') { qStr = t.value; renderGrid(); return; }
+  if (t.dataset.lc) { const scope = t.closest('.lc').dataset.scope; const L = scope === 'default' ? S.settings.label : editing.label; applyLC(L, t);
+    if (t.dataset.lc === 'color') t.closest('.lc').querySelectorAll('.swc').forEach(s => s.classList.remove('on'));
+    if (scope === 'default') { save(); updLPrev(); } else edPrev(); return; }
+  if (t.closest('#edform')) { edPrev(); return; }
+  if (t.dataset.set) { S.settings[t.dataset.set] = t.value; save(); return; }
+});
+document.addEventListener('change', ev => {
+  const t = ev.target;
+  if (t.id === 'lsample') { lblSample = t.value; updLPrev(); }
+  if (t.dataset.qty) { qAdd(t.dataset.qty, Math.max(0, +t.value || 0), true); render(); }
+  if (t.dataset.lc === 'w' || t.dataset.lc === 'h') { const box = t.closest('.lc'); const scope = box.dataset.scope; const L = scope === 'default' ? S.settings.label : editing.label; box.outerHTML = labelCtrls(L, scope); }
+});
+document.addEventListener('submit', ev => {
+  if (ev.target.id === 'edform') { ev.preventDefault(); saveEditor(); }
+  if (ev.target.id === 'scanform') { ev.preventDefault(); const v = $('#scanin').value; $('#scanin').value = ''; handleScan(v); }
+});
+window.addEventListener('hashchange', () => { const h = location.hash.slice(1); if (h && h !== view && ['home','labels','scan','print','more'].includes(h)) { view = h; render(); } });
+
+/* ---------- boot ---------- */
+function hideSplash(){ const s = $('#splash'); s.classList.add('hide'); setTimeout(() => s.remove(), 500); try { sessionStorage.setItem('bk-splash', '1'); } catch(e) {} }
+let seen = false; try { seen = sessionStorage.getItem('bk-splash'); } catch(e) {}
+if (seen) $('#splash').remove(); else setTimeout(hideSplash, 1700);
+render();
+(function hook(n){
+  if (!(window.claude && window.claude.use)) { if (n < 40) setTimeout(() => hook(n + 1), 250); return; }
+  window.claude.use('artifact').then(a => { ART = a; if (!a) return; if (dirty) schedulePublish(); else { syncState = 'saved'; setSync(); } }).catch(() => {});
+  window.claude.use('downloads').then(d => { DL = d; }).catch(() => {});
+})(0);
+</script>
+<!--B1-->
+</body>
+</html>
